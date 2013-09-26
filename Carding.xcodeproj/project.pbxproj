@@ -21,6 +21,16 @@
 		E0AF80ED17F4A16F000C420A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AF80CF17F4A16F000C420A /* UIKit.framework */; };
 		E0AF80F517F4A16F000C420A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E0AF80F317F4A16F000C420A /* InfoPlist.strings */; };
 		E0AF80F717F4A170000C420A /* CardingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF80F617F4A170000C420A /* CardingTests.m */; };
+		E0AF810217F4A333000C420A /* CardingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF810117F4A333000C420A /* CardingCell.m */; };
+		E0AF810317F4A333000C420A /* CardingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF810117F4A333000C420A /* CardingCell.m */; };
+		E0AF810817F4A3E5000C420A /* CardingInitialLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF810717F4A3E5000C420A /* CardingInitialLayout.m */; };
+		E0AF810917F4A3E5000C420A /* CardingInitialLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF810717F4A3E5000C420A /* CardingInitialLayout.m */; };
+		E0AF810B17F4A50D000C420A /* CardingCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0AF810A17F4A50D000C420A /* CardingCellView.xib */; };
+		E0AF810C17F4A50D000C420A /* CardingCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0AF810A17F4A50D000C420A /* CardingCellView.xib */; };
+		E0AF810F17F4A6E2000C420A /* CardingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF810E17F4A6E2000C420A /* CardingModel.m */; };
+		E0AF811017F4A6E2000C420A /* CardingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF810E17F4A6E2000C420A /* CardingModel.m */; };
+		E0AF811217F4A9EF000C420A /* paper.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AF811117F4A9EF000C420A /* paper.png */; };
+		E0AF811317F4A9EF000C420A /* paper.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AF811117F4A9EF000C420A /* paper.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +63,14 @@
 		E0AF80F217F4A16F000C420A /* CardingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CardingTests-Info.plist"; sourceTree = "<group>"; };
 		E0AF80F417F4A16F000C420A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E0AF80F617F4A170000C420A /* CardingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CardingTests.m; sourceTree = "<group>"; };
+		E0AF810017F4A333000C420A /* CardingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardingCell.h; path = Carding/CardingCell.h; sourceTree = "<group>"; };
+		E0AF810117F4A333000C420A /* CardingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardingCell.m; path = Carding/CardingCell.m; sourceTree = "<group>"; };
+		E0AF810617F4A3E5000C420A /* CardingInitialLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardingInitialLayout.h; sourceTree = "<group>"; };
+		E0AF810717F4A3E5000C420A /* CardingInitialLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingInitialLayout.m; sourceTree = "<group>"; };
+		E0AF810A17F4A50D000C420A /* CardingCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardingCellView.xib; sourceTree = "<group>"; };
+		E0AF810D17F4A6E2000C420A /* CardingModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardingModel.h; sourceTree = "<group>"; };
+		E0AF810E17F4A6E2000C420A /* CardingModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingModel.m; sourceTree = "<group>"; };
+		E0AF811117F4A9EF000C420A /* paper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paper.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +100,11 @@
 		E0AF80BF17F4A16F000C420A = {
 			isa = PBXGroup;
 			children = (
-				E0AF80D117F4A16F000C420A /* Carding */,
+				E0AF811117F4A9EF000C420A /* paper.png */,
+				E0AF810517F4A372000C420A /* Models */,
+				E0AF810417F4A345000C420A /* Views */,
+				E0AF80D117F4A16F000C420A /* Controllers */,
+				E0AF80D217F4A16F000C420A /* Supporting Files */,
 				E0AF80F017F4A16F000C420A /* CardingTests */,
 				E0AF80CA17F4A16F000C420A /* Frameworks */,
 				E0AF80C917F4A16F000C420A /* Products */,
@@ -109,29 +131,29 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		E0AF80D117F4A16F000C420A /* Carding */ = {
+		E0AF80D117F4A16F000C420A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				E0AF80DA17F4A16F000C420A /* CardingAppDelegate.h */,
-				E0AF80DB17F4A16F000C420A /* CardingAppDelegate.m */,
-				E0AF80DD17F4A16F000C420A /* Main.storyboard */,
 				E0AF80E017F4A16F000C420A /* CardingViewController.h */,
 				E0AF80E117F4A16F000C420A /* CardingViewController.m */,
 				E0AF80E317F4A16F000C420A /* Images.xcassets */,
-				E0AF80D217F4A16F000C420A /* Supporting Files */,
 			);
+			name = Controllers;
 			path = Carding;
 			sourceTree = "<group>";
 		};
 		E0AF80D217F4A16F000C420A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E0AF80DA17F4A16F000C420A /* CardingAppDelegate.h */,
+				E0AF80DB17F4A16F000C420A /* CardingAppDelegate.m */,
 				E0AF80D317F4A16F000C420A /* Carding-Info.plist */,
 				E0AF80D417F4A16F000C420A /* InfoPlist.strings */,
 				E0AF80D717F4A16F000C420A /* main.m */,
 				E0AF80D917F4A16F000C420A /* Carding-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			path = Carding;
 			sourceTree = "<group>";
 		};
 		E0AF80F017F4A16F000C420A /* CardingTests */ = {
@@ -150,6 +172,29 @@
 				E0AF80F317F4A16F000C420A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E0AF810417F4A345000C420A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E0AF80DD17F4A16F000C420A /* Main.storyboard */,
+				E0AF810A17F4A50D000C420A /* CardingCellView.xib */,
+				E0AF810617F4A3E5000C420A /* CardingInitialLayout.h */,
+				E0AF810717F4A3E5000C420A /* CardingInitialLayout.m */,
+				E0AF810017F4A333000C420A /* CardingCell.h */,
+				E0AF810117F4A333000C420A /* CardingCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		E0AF810517F4A372000C420A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E0AF810D17F4A6E2000C420A /* CardingModel.h */,
+				E0AF810E17F4A6E2000C420A /* CardingModel.m */,
+			);
+			name = Models;
+			path = Carding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,8 +275,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0AF80E417F4A16F000C420A /* Images.xcassets in Resources */,
+				E0AF811217F4A9EF000C420A /* paper.png in Resources */,
 				E0AF80D617F4A16F000C420A /* InfoPlist.strings in Resources */,
 				E0AF80DF17F4A16F000C420A /* Main.storyboard in Resources */,
+				E0AF810B17F4A50D000C420A /* CardingCellView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +287,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0AF80F517F4A16F000C420A /* InfoPlist.strings in Resources */,
+				E0AF810C17F4A50D000C420A /* CardingCellView.xib in Resources */,
+				E0AF811317F4A9EF000C420A /* paper.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +299,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0AF810F17F4A6E2000C420A /* CardingModel.m in Sources */,
+				E0AF810817F4A3E5000C420A /* CardingInitialLayout.m in Sources */,
+				E0AF810217F4A333000C420A /* CardingCell.m in Sources */,
 				E0AF80D817F4A16F000C420A /* main.m in Sources */,
 				E0AF80DC17F4A16F000C420A /* CardingAppDelegate.m in Sources */,
 				E0AF80E217F4A16F000C420A /* CardingViewController.m in Sources */,
@@ -260,6 +312,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0AF810317F4A333000C420A /* CardingCell.m in Sources */,
+				E0AF810917F4A3E5000C420A /* CardingInitialLayout.m in Sources */,
+				E0AF811017F4A6E2000C420A /* CardingModel.m in Sources */,
 				E0AF80F717F4A170000C420A /* CardingTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -289,6 +344,7 @@
 				E0AF80DE17F4A16F000C420A /* Base */,
 			);
 			name = Main.storyboard;
+			path = Carding;
 			sourceTree = "<group>";
 		};
 		E0AF80F317F4A16F000C420A /* InfoPlist.strings */ = {

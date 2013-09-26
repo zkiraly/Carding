@@ -1,13 +1,13 @@
 //
-//  CardingViewController.h
+//  CardingInitialLayout.m
 //  Carding
 //
 //  Created by Zsolt Kiraly on 9/26/13.
 //  Copyright (c) 2013 resetBit. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CardingInitialLayout.h"
 
-@interface CardingViewController : UICollectionViewController
+@implementation CardingInitialLayout
 
 @end

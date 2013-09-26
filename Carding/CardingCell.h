@@ -1,5 +1,5 @@
 //
-//  CardingViewController.h
+//  CardingCell.h
 //  Carding
 //
 //  Created by Zsolt Kiraly on 9/26/13.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CardingViewController : UICollectionViewController
+@interface CardingCell : UICollectionViewCell
+
+@property (nonatomic, weak) IBOutlet UILabel *cardNumber;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  CardingViewController.h
+//  CardingInitialLayout.h
 //  Carding
 //
 //  Created by Zsolt Kiraly on 9/26/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CardingViewController : UICollectionViewController
+@interface CardingInitialLayout : UICollectionViewLayout
 
 @end
