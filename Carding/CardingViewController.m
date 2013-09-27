@@ -20,13 +20,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    // Do any additional setup after loading the view.
+    // The view for the cell is in a nib (xib) file, not in the main storyboard
     UINib *cellNib = [UINib nibWithNibName:@"CardingCellView" bundle:nil];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CARDING_CELL"];
-    
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionViewLayout;
-    flowLayout.itemSize = CGSizeMake(320.0, 192.0);
-    
     
 
 }
@@ -86,6 +82,8 @@
     [cell.layer setShadowOpacity:0.6];
     [cell.layer setShadowRadius:5.0];
     [cell.layer setShadowOffset:CGSizeMake(0.0, -0.0)];
+    [cell.layer setShadowPath:[[UIBezierPath bezierPathWithRect:cell.bounds] CGPath]];
+    
 #endif
     
     return cell;
