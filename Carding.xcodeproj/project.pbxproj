@@ -31,6 +31,12 @@
 		E0AF811017F4A6E2000C420A /* CardingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF810E17F4A6E2000C420A /* CardingModel.m */; };
 		E0AF811217F4A9EF000C420A /* paper.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AF811117F4A9EF000C420A /* paper.png */; };
 		E0AF811317F4A9EF000C420A /* paper.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AF811117F4A9EF000C420A /* paper.png */; };
+		E0AF811617F5EB9C000C420A /* CardingVCAncestor.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF811517F5EB9C000C420A /* CardingVCAncestor.m */; };
+		E0AF811717F5EB9C000C420A /* CardingVCAncestor.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF811517F5EB9C000C420A /* CardingVCAncestor.m */; };
+		E0AF811A17F5F02A000C420A /* CardingTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF811917F5F02A000C420A /* CardingTransitionController.m */; };
+		E0AF811B17F5F02A000C420A /* CardingTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF811917F5F02A000C420A /* CardingTransitionController.m */; };
+		E0AF811E17F5F3C3000C420A /* CardingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF811D17F5F3C3000C420A /* CardingDetailViewController.m */; };
+		E0AF811F17F5F3C3000C420A /* CardingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF811D17F5F3C3000C420A /* CardingDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +77,12 @@
 		E0AF810D17F4A6E2000C420A /* CardingModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardingModel.h; sourceTree = "<group>"; };
 		E0AF810E17F4A6E2000C420A /* CardingModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingModel.m; sourceTree = "<group>"; };
 		E0AF811117F4A9EF000C420A /* paper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paper.png; sourceTree = "<group>"; };
+		E0AF811417F5EB9C000C420A /* CardingVCAncestor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardingVCAncestor.h; sourceTree = "<group>"; };
+		E0AF811517F5EB9C000C420A /* CardingVCAncestor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingVCAncestor.m; sourceTree = "<group>"; };
+		E0AF811817F5F02A000C420A /* CardingTransitionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardingTransitionController.h; sourceTree = "<group>"; };
+		E0AF811917F5F02A000C420A /* CardingTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingTransitionController.m; sourceTree = "<group>"; };
+		E0AF811C17F5F3C3000C420A /* CardingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardingDetailViewController.h; sourceTree = "<group>"; };
+		E0AF811D17F5F3C3000C420A /* CardingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,9 +146,15 @@
 		E0AF80D117F4A16F000C420A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E0AF811417F5EB9C000C420A /* CardingVCAncestor.h */,
+				E0AF811517F5EB9C000C420A /* CardingVCAncestor.m */,
 				E0AF80E017F4A16F000C420A /* CardingViewController.h */,
 				E0AF80E117F4A16F000C420A /* CardingViewController.m */,
+				E0AF811C17F5F3C3000C420A /* CardingDetailViewController.h */,
+				E0AF811D17F5F3C3000C420A /* CardingDetailViewController.m */,
 				E0AF80E317F4A16F000C420A /* Images.xcassets */,
+				E0AF811817F5F02A000C420A /* CardingTransitionController.h */,
+				E0AF811917F5F02A000C420A /* CardingTransitionController.m */,
 			);
 			name = Controllers;
 			path = Carding;
@@ -300,11 +318,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0AF810F17F4A6E2000C420A /* CardingModel.m in Sources */,
+				E0AF811E17F5F3C3000C420A /* CardingDetailViewController.m in Sources */,
 				E0AF810817F4A3E5000C420A /* CardingInitialLayout.m in Sources */,
 				E0AF810217F4A333000C420A /* CardingCell.m in Sources */,
 				E0AF80D817F4A16F000C420A /* main.m in Sources */,
 				E0AF80DC17F4A16F000C420A /* CardingAppDelegate.m in Sources */,
+				E0AF811617F5EB9C000C420A /* CardingVCAncestor.m in Sources */,
 				E0AF80E217F4A16F000C420A /* CardingViewController.m in Sources */,
+				E0AF811A17F5F02A000C420A /* CardingTransitionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +335,9 @@
 			files = (
 				E0AF810317F4A333000C420A /* CardingCell.m in Sources */,
 				E0AF810917F4A3E5000C420A /* CardingInitialLayout.m in Sources */,
+				E0AF811717F5EB9C000C420A /* CardingVCAncestor.m in Sources */,
+				E0AF811F17F5F3C3000C420A /* CardingDetailViewController.m in Sources */,
+				E0AF811B17F5F02A000C420A /* CardingTransitionController.m in Sources */,
 				E0AF811017F4A6E2000C420A /* CardingModel.m in Sources */,
 				E0AF80F717F4A170000C420A /* CardingTests.m in Sources */,
 			);

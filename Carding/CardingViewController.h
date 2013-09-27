@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CardingVCAncestor.h"
 
-@interface CardingViewController : UICollectionViewController
+@interface CardingViewController : CardingVCAncestor
 
 @end

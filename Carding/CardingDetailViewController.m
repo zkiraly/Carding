@@ -1,27 +1,34 @@
 //
-//  CardingViewController.m
+//  CardingDetailViewController.m
 //  Carding
 //
-//  Created by Zsolt Kiraly on 9/26/13.
+//  Created by Zsolt Kiraly on 9/27/13.
 //  Copyright (c) 2013 resetBit. All rights reserved.
 //
 
-#import "CardingViewController.h"
 #import "CardingDetailViewController.h"
 #import "CardingCell.h"
 #import "CardingModel.h"
 
-@interface CardingViewController ()
+@interface CardingDetailViewController ()
 
 @end
 
-@implementation CardingViewController
+@implementation CardingDetailViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-
+	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
@@ -33,19 +40,19 @@
 #pragma mark - UICollectionViewDataSource methods
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    NSLog(@"CardingViewController numberOfSectionsInCollectionView");
+    NSLog(@"CardingDetailViewController numberOfSectionsInCollectionView");
     return 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    NSLog(@"CardingViewController collectionView:numberOfItemsInSection: returning %lu", (unsigned long)[CardingModel sharedInstance].cards.count);
+    NSLog(@"CardingDetailViewController collectionView:numberOfItemsInSection: returning %lu", (unsigned long)[CardingModel sharedInstance].cards.count);
     
     return [CardingModel sharedInstance].cards.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 {
-    NSLog(@"CardingViewController collectionView:cellForItemAtIndexPath: %@", indexPath);
+    NSLog(@"CardingDetailViewController collectionView:cellForItemAtIndexPath: %@", indexPath);
     
     CardingCell *cell = (CardingCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
@@ -85,39 +92,6 @@
     
     return cell;
 }
-
-
-
-#pragma mark - UICollectionViewDelegate methods
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"UICollectionView new selection at index path: %@", indexPath);
-    
-    [self.navigationController pushViewController:[self nextViewControllerAtPoint:CGPointZero] animated:YES];
-
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"UICollectionView new selection at index path: %@", indexPath);
-    
-    
-    
-    
-}
-
--(UICollectionViewController*)nextViewControllerAtPoint:(CGPoint)p
-{
-    // We could have multiple section stacks and find the right one,
-    UICollectionViewFlowLayout* grid = [[UICollectionViewFlowLayout alloc] init];
-    grid.itemSize = CGSizeMake(320.0, 192.0);
-    grid.sectionInset = UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
-    CardingDetailViewController* nextCollectionViewController = [[CardingDetailViewController alloc] initWithCollectionViewLayout:grid];
-    //nextCollectionViewController.useLayoutToLayoutNavigationTransitions = YES;
-    nextCollectionViewController.title = @"Card Detail";
-    return nextCollectionViewController;
-}
-
-
 
 
 @end
