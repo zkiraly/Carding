@@ -8,6 +8,7 @@
 
 #import "CardingViewController.h"
 #import "CardingDetailViewController.h"
+#import "CardingDetailLayout.h"
 #import "CardingCell.h"
 #import "CardingModel.h"
 
@@ -23,6 +24,11 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    //[self.collectionView reloadData];
+    //[self.collectionViewLayout invalidateLayout];
 }
 
 - (void)didReceiveMemoryWarning
@@ -97,6 +103,9 @@
     NSArray *selectedIndexPaths = collectionView.indexPathsForSelectedItems;
     _selectedIndex = ((NSIndexPath *)[selectedIndexPaths firstObject]).item;
     
+    
+    
+    
     [self.navigationController pushViewController:[self nextViewControllerAtPoint:CGPointZero] animated:YES];
 
 }
@@ -112,15 +121,22 @@
 {
     // We could have multiple section stacks and find the right one,
     UICollectionViewFlowLayout* grid = [[UICollectionViewFlowLayout alloc] init];
+    CardingDetailLayout *detailLayout = [[CardingDetailLayout alloc] init];
     grid.itemSize = CGSizeMake(320.0, 192.0);
     grid.sectionInset = UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
-    CardingDetailViewController* nextCollectionViewController = [[CardingDetailViewController alloc] initWithCollectionViewLayout:grid];
-    //nextCollectionViewController.useLayoutToLayoutNavigationTransitions = YES;
+    CardingDetailViewController* nextCollectionViewController = [[CardingDetailViewController alloc] initWithCollectionViewLayout:detailLayout];
+    nextCollectionViewController.useLayoutToLayoutNavigationTransitions = YES;
     nextCollectionViewController.title = @"Card Detail";
     
     nextCollectionViewController.selectedItem = [CardingModel sharedInstance].cards[_selectedIndex];
     
     return nextCollectionViewController;
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+    NSLog(@"CardingViewController moved to parent");
+    //[self.collectionViewLayout invalidateLayout];
+    [self.collectionView reloadData];
 }
 
 

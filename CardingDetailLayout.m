@@ -1,24 +1,23 @@
 //
-//  CardingInitialLayout.m
+//  CardingDetailLayout.m
 //  Carding
 //
-//  Created by Zsolt Kiraly on 9/26/13.
+//  Created by Zsolt Kiraly on 9/27/13.
 //  Copyright (c) 2013 resetBit. All rights reserved.
 //
 
-#import "CardingInitialLayout.h"
-#import "CardingCell.h"
+#import "CardingDetailLayout.h"
 
-@implementation CardingInitialLayout {
+@implementation CardingDetailLayout {
     NSMutableArray *_attributesArray;
+    CGRect _displayBounds;
 }
 
 
 - (void)prepareLayout {
     [super prepareLayout];
     
-    self.minimumLineSpacing = 5;
-    self.itemSize = CGSizeMake(320.0, 192.0);
+    _displayBounds = [UIScreen mainScreen].bounds;
     
     // We only display one section in this layout.
     NSInteger itemCount = [self.collectionView numberOfItemsInSection:0];
@@ -27,11 +26,19 @@
         _attributesArray = [[NSMutableArray alloc] initWithCapacity:itemCount];
     }
     
-    CGFloat yPos = 0.0;
+    CGFloat yPos = _displayBounds.size.height;
     
     for (NSInteger i = 0; i < itemCount; i ++) {
+        CGRect newFrame;
         UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
-        CGRect newFrame = CGRectMake(0.0, yPos, 320.0, 192.0);
+        
+        if ([self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]].selected) {
+            newFrame = CGRectMake(0.0, 0.0, 320.0, 192.0);
+        } else {
+            newFrame = CGRectMake(0.0, yPos, 320.0, 192.0);
+
+        }
+        
         yPos += 72.0;
         
         attributes.frame = newFrame;
@@ -44,31 +51,10 @@
     }
 }
 
-#if 0
-- (void)prepareForTransitionFromLayout:(UICollectionViewLayout *)oldLayout {
-    [super prepareForTransitionFromLayout:oldLayout];
-    
-     NSInteger itemCount = [self.collectionView numberOfItemsInSection:0];
-    
-    if (!_attributesArray) {
-        _attributesArray = [[NSMutableArray alloc] initWithCapacity:itemCount];
-    }
-    
-    for (UICollectionViewLayoutAttributes *attrib in _attributesArray)
-    {
-        CardingCell *cell = (CardingCell *)[self.collectionView cellForItemAtIndexPath:attrib.indexPath];
-        long realZIndex = cell.indexPath.item + 1;
-        attrib.zIndex = realZIndex;
-        attrib.transform3D = CATransform3DMakeTranslation(0, 0, realZIndex);
-    }
-    
-    
-}
-#endif
-
 - (CGSize)collectionViewContentSize {
     //return CGSizeMake(320.0, 1500.0);
-    return [super collectionViewContentSize];
+    //return [super collectionViewContentSize];
+    return _displayBounds.size;
 }
 
 -(NSArray*)layoutAttributesForElementsInRect:(CGRect)rect
@@ -80,7 +66,15 @@
     for (UICollectionViewLayoutAttributes *attrib in _attributesArray)
     {
         // preserve the correct z order (from SO)
-        attrib.zIndex = attrib.indexPath.item + 1;
+        
+        if ([self.collectionView cellForItemAtIndexPath:attrib.indexPath].selected)
+        {
+#if 0
+            attrib.zIndex = 100;
+        } else {
+#endif
+            attrib.zIndex = attrib.indexPath.item + 1;
+        }
         // is it in the rect?
         if (CGRectIntersectsRect(rect, attrib.frame)) {
             
@@ -98,7 +92,16 @@
     UICollectionViewLayoutAttributes *attrib = [_attributesArray objectAtIndex:indexPath.item];
     
     // preserve the correct z order (from SO)
-    attrib.transform3D = CATransform3DMakeTranslation(0, 0, attrib.indexPath.item);
+    if ([self.collectionView cellForItemAtIndexPath:attrib.indexPath].selected)
+    {
+#if 0
+        attrib.transform3D = CATransform3DMakeTranslation(0, 0, 100);
+    } else {
+#endif
+        attrib.transform3D = CATransform3DMakeTranslation(0, 0, attrib.indexPath.item);
+    }
+
+    
     
     //attrib.zIndex = indexPath.item + 1;
     NSLog(@"CardingInitialLayout layoutAttributesForItemAtIndexPath:\nfor item %@ set zIndex to %lu", attrib.indexPath, attrib.zIndex);
@@ -106,5 +109,4 @@
     
     return attrib;
 }
-
 @end

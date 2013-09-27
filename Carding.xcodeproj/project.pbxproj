@@ -37,6 +37,8 @@
 		E0AF811B17F5F02A000C420A /* CardingTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF811917F5F02A000C420A /* CardingTransitionController.m */; };
 		E0AF811E17F5F3C3000C420A /* CardingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF811D17F5F3C3000C420A /* CardingDetailViewController.m */; };
 		E0AF811F17F5F3C3000C420A /* CardingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF811D17F5F3C3000C420A /* CardingDetailViewController.m */; };
+		E0AF812217F61DA9000C420A /* CardingDetailLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF812117F61DA9000C420A /* CardingDetailLayout.m */; };
+		E0AF812317F61DA9000C420A /* CardingDetailLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF812117F61DA9000C420A /* CardingDetailLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +85,8 @@
 		E0AF811917F5F02A000C420A /* CardingTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingTransitionController.m; sourceTree = "<group>"; };
 		E0AF811C17F5F3C3000C420A /* CardingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardingDetailViewController.h; sourceTree = "<group>"; };
 		E0AF811D17F5F3C3000C420A /* CardingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingDetailViewController.m; sourceTree = "<group>"; };
+		E0AF812017F61DA9000C420A /* CardingDetailLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardingDetailLayout.h; sourceTree = "<group>"; };
+		E0AF812117F61DA9000C420A /* CardingDetailLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingDetailLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,10 +201,12 @@
 			children = (
 				E0AF80DD17F4A16F000C420A /* Main.storyboard */,
 				E0AF810A17F4A50D000C420A /* CardingCellView.xib */,
-				E0AF810617F4A3E5000C420A /* CardingInitialLayout.h */,
-				E0AF810717F4A3E5000C420A /* CardingInitialLayout.m */,
 				E0AF810017F4A333000C420A /* CardingCell.h */,
 				E0AF810117F4A333000C420A /* CardingCell.m */,
+				E0AF810617F4A3E5000C420A /* CardingInitialLayout.h */,
+				E0AF810717F4A3E5000C420A /* CardingInitialLayout.m */,
+				E0AF812017F61DA9000C420A /* CardingDetailLayout.h */,
+				E0AF812117F61DA9000C420A /* CardingDetailLayout.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -324,6 +330,7 @@
 				E0AF80D817F4A16F000C420A /* main.m in Sources */,
 				E0AF80DC17F4A16F000C420A /* CardingAppDelegate.m in Sources */,
 				E0AF811617F5EB9C000C420A /* CardingVCAncestor.m in Sources */,
+				E0AF812217F61DA9000C420A /* CardingDetailLayout.m in Sources */,
 				E0AF80E217F4A16F000C420A /* CardingViewController.m in Sources */,
 				E0AF811A17F5F02A000C420A /* CardingTransitionController.m in Sources */,
 			);
@@ -334,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0AF810317F4A333000C420A /* CardingCell.m in Sources */,
+				E0AF812317F61DA9000C420A /* CardingDetailLayout.m in Sources */,
 				E0AF810917F4A3E5000C420A /* CardingInitialLayout.m in Sources */,
 				E0AF811717F5EB9C000C420A /* CardingVCAncestor.m in Sources */,
 				E0AF811F17F5F3C3000C420A /* CardingDetailViewController.m in Sources */,
