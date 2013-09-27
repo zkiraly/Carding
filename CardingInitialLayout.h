@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CardingInitialLayout : UICollectionViewLayout
+@interface CardingInitialLayout : UICollectionViewFlowLayout
 
 @end

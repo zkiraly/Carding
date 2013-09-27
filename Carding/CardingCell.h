@@ -11,5 +11,6 @@
 @interface CardingCell : UICollectionViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *cardNumber;
+@property (nonatomic, retain) NSIndexPath *indexPath;
 
 @end
