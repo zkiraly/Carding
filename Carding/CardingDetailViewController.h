@@ -10,4 +10,6 @@
 
 @interface CardingDetailViewController : CardingVCAncestor
 
+@property (nonatomic, retain) NSString *selectedItem;
+
 @end

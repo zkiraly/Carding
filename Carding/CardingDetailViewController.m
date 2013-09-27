@@ -47,7 +47,7 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     NSLog(@"CardingDetailViewController collectionView:numberOfItemsInSection: returning %lu", (unsigned long)[CardingModel sharedInstance].cards.count);
     
-    return [CardingModel sharedInstance].cards.count;
+    return 1; //[CardingModel sharedInstance].cards.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
@@ -56,7 +56,7 @@
     
     CardingCell *cell = (CardingCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
-    cell.cardNumber.text = [[CardingModel sharedInstance].cards objectAtIndex:indexPath.item];
+    cell.cardNumber.text = _selectedItem; //[[CardingModel sharedInstance].cards objectAtIndex:indexPath.item];
     
     cell.indexPath = indexPath;
     

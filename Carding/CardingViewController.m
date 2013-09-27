@@ -11,8 +11,9 @@
 #import "CardingCell.h"
 #import "CardingModel.h"
 
-@interface CardingViewController ()
-
+@interface CardingViewController (){
+    NSInteger _selectedIndex;
+}
 @end
 
 @implementation CardingViewController
@@ -93,15 +94,17 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"UICollectionView new selection at index path: %@", indexPath);
     
+    NSArray *selectedIndexPaths = collectionView.indexPathsForSelectedItems;
+    _selectedIndex = ((NSIndexPath *)[selectedIndexPaths firstObject]).item;
+    
     [self.navigationController pushViewController:[self nextViewControllerAtPoint:CGPointZero] animated:YES];
 
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"UICollectionView new selection at index path: %@", indexPath);
+    NSLog(@"UICollectionView de-selected at index path: %@", indexPath);
     
-    
-    
+    _selectedIndex = -1;
     
 }
 
@@ -114,6 +117,9 @@
     CardingDetailViewController* nextCollectionViewController = [[CardingDetailViewController alloc] initWithCollectionViewLayout:grid];
     //nextCollectionViewController.useLayoutToLayoutNavigationTransitions = YES;
     nextCollectionViewController.title = @"Card Detail";
+    
+    nextCollectionViewController.selectedItem = [CardingModel sharedInstance].cards[_selectedIndex];
+    
     return nextCollectionViewController;
 }
 
