@@ -39,6 +39,8 @@
 		E0AF811F17F5F3C3000C420A /* CardingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF811D17F5F3C3000C420A /* CardingDetailViewController.m */; };
 		E0AF812217F61DA9000C420A /* CardingDetailLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF812117F61DA9000C420A /* CardingDetailLayout.m */; };
 		E0AF812317F61DA9000C420A /* CardingDetailLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF812117F61DA9000C420A /* CardingDetailLayout.m */; };
+		E0FE22F517F9F1C60035E786 /* CardingSingleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FE22F417F9F1C60035E786 /* CardingSingleViewController.m */; };
+		E0FE22F617F9F1C60035E786 /* CardingSingleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FE22F417F9F1C60035E786 /* CardingSingleViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +89,8 @@
 		E0AF811D17F5F3C3000C420A /* CardingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingDetailViewController.m; sourceTree = "<group>"; };
 		E0AF812017F61DA9000C420A /* CardingDetailLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardingDetailLayout.h; sourceTree = "<group>"; };
 		E0AF812117F61DA9000C420A /* CardingDetailLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingDetailLayout.m; sourceTree = "<group>"; };
+		E0FE22F317F9F1C60035E786 /* CardingSingleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardingSingleViewController.h; sourceTree = "<group>"; };
+		E0FE22F417F9F1C60035E786 /* CardingSingleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardingSingleViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +158,8 @@
 				E0AF811517F5EB9C000C420A /* CardingVCAncestor.m */,
 				E0AF80E017F4A16F000C420A /* CardingViewController.h */,
 				E0AF80E117F4A16F000C420A /* CardingViewController.m */,
+				E0FE22F317F9F1C60035E786 /* CardingSingleViewController.h */,
+				E0FE22F417F9F1C60035E786 /* CardingSingleViewController.m */,
 				E0AF811C17F5F3C3000C420A /* CardingDetailViewController.h */,
 				E0AF811D17F5F3C3000C420A /* CardingDetailViewController.m */,
 				E0AF80E317F4A16F000C420A /* Images.xcassets */,
@@ -326,6 +332,7 @@
 				E0AF810F17F4A6E2000C420A /* CardingModel.m in Sources */,
 				E0AF811E17F5F3C3000C420A /* CardingDetailViewController.m in Sources */,
 				E0AF810817F4A3E5000C420A /* CardingInitialLayout.m in Sources */,
+				E0FE22F517F9F1C60035E786 /* CardingSingleViewController.m in Sources */,
 				E0AF810217F4A333000C420A /* CardingCell.m in Sources */,
 				E0AF80D817F4A16F000C420A /* main.m in Sources */,
 				E0AF80DC17F4A16F000C420A /* CardingAppDelegate.m in Sources */,
@@ -347,6 +354,7 @@
 				E0AF811F17F5F3C3000C420A /* CardingDetailViewController.m in Sources */,
 				E0AF811B17F5F02A000C420A /* CardingTransitionController.m in Sources */,
 				E0AF811017F4A6E2000C420A /* CardingModel.m in Sources */,
+				E0FE22F617F9F1C60035E786 /* CardingSingleViewController.m in Sources */,
 				E0AF80F717F4A170000C420A /* CardingTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -549,6 +557,7 @@
 				E0AF80FC17F4A170000C420A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E0AF80FD17F4A170000C420A /* Build configuration list for PBXNativeTarget "CardingTests" */ = {
 			isa = XCConfigurationList;
@@ -557,6 +566,7 @@
 				E0AF80FF17F4A170000C420A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

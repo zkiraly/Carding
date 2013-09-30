@@ -8,21 +8,61 @@
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController title="Cards" id="vXZ-lx-hvc" customClass="CardingViewController" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="mF7-Ms-PxD">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="tVt-fe-nCR">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewLayout key="collectionViewLayout" id="KhA-dX-jB7" customClass="CardingInitialLayout"/>
-                        <cells/>
-                        <connections>
-                            <outlet property="dataSource" destination="vXZ-lx-hvc" id="Nzo-eE-urX"/>
-                        </connections>
+                        <collectionViewLayout key="collectionViewLayout" id="Qmg-5W-Ucc" customClass="CardingInitialLayout"/>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="wAm-wz-2zC">
+                                <rect key="frame" x="0.0" y="64" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <segue destination="gZg-LF-873" kind="push" identifier="CELL_TO_DETAIL_SEGUE" id="Bcz-TJ-edG"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
                     </collectionView>
                     <navigationItem key="navigationItem" id="vAg-6s-xTL"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="882" y="64"/>
+        </scene>
+        <!--Carding Single View Controller-->
+        <scene sceneID="Bc3-lz-vPL">
+            <objects>
+                <viewController id="gZg-LF-873" customClass="CardingSingleViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pkx-HU-3Hd"/>
+                        <viewControllerLayoutGuide type="bottom" id="2na-mU-4Hu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="04N-Ma-nOB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="01" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fWC-9a-WdL">
+                                <rect key="frame" x="5" y="67" width="55" height="72"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="44"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="shb-35-C1F"/>
+                    <connections>
+                        <outlet property="cardNumber" destination="fWC-9a-WdL" id="4tk-XW-4lE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RY3-bZ-JqH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1426" y="64"/>
         </scene>
         <!--Navigation Controller - Carding-->
         <scene sceneID="jkG-y9-BhZ">

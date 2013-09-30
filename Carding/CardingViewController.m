@@ -9,6 +9,7 @@
 #import "CardingViewController.h"
 #import "CardingDetailViewController.h"
 #import "CardingDetailLayout.h"
+#import "CardingSingleViewController.h"
 #import "CardingCell.h"
 #import "CardingModel.h"
 
@@ -94,53 +95,28 @@
     return cell;
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSLog(@"CardingViewController prepareForSegue:sender:");
+    
+    if ([segue.destinationViewController isKindOfClass:[CardingSingleViewController class]]) {
+        // Get the selected item index path
+        NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
+        
+        // Set the thing on the view controller we're about to show
+        if (selectedIndexPath != nil) {
+            CardingSingleViewController *secondViewController = (CardingSingleViewController *)segue.destinationViewController;
+            secondViewController.item = [NSString stringWithFormat:@"%2d", selectedIndexPath.item];;
+        }
+    }
+}
+
 
 
 #pragma mark - UICollectionViewDelegate methods
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"UICollectionView new selection at index path: %@", indexPath);
-    
-    NSArray *selectedIndexPaths = collectionView.indexPathsForSelectedItems;
-    _selectedIndex = ((NSIndexPath *)[selectedIndexPaths firstObject]).item;
-    
-    
-    
-    
-    [self.navigationController pushViewController:[self nextViewControllerAtPoint:CGPointZero] animated:YES];
-
+    NSLog(@"CardingViewController collectionView:disSelectItemAtIndexPath");
+    [self performSegueWithIdentifier:@"CELL_TO_DETAIL_SEGUE" sender:self];
 }
-
-- (void)collectionView:(UICollectionView *)collectionView didSDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"UICollectionView de-selected at index path: %@", indexPath);
-    
-    _selectedIndex = -1;
-    
-}
-
--(UICollectionViewController*)nextViewControllerAtPoint:(CGPoint)p
-{
-    // We could have multiple section stacks and find the right one,
-    UICollectionViewFlowLayout* grid = [[UICollectionViewFlowLayout alloc] init];
-    CardingDetailLayout *detailLayout = [[CardingDetailLayout alloc] init];
-    grid.itemSize = CGSizeMake(320.0, 192.0);
-    grid.sectionInset = UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
-    CardingDetailViewController* nextCollectionViewController = [[CardingDetailViewController alloc] initWithCollectionViewLayout:detailLayout];
-    nextCollectionViewController.useLayoutToLayoutNavigationTransitions = YES;
-    nextCollectionViewController.title = @"Card Detail";
-    
-    nextCollectionViewController.selectedItem = [CardingModel sharedInstance].cards[_selectedIndex];
-    
-    return nextCollectionViewController;
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-    NSLog(@"CardingViewController moved to parent");
-    //[self.collectionViewLayout invalidateLayout];
-    [self.collectionView reloadData];
-}
-
-
-
 
 @end
