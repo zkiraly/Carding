@@ -10,7 +10,9 @@
 #import "CardingCell.h"
 #import "CardingModel.h"
 
-@interface CardingDetailViewController ()
+@interface CardingDetailViewController () {
+    CardingCell *selectedCell;
+}
 
 @end
 
@@ -21,6 +23,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        selectedCell = nil;
     }
     return self;
 }
@@ -33,7 +36,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     
-    
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    selectedCell.cardNumber.textColor = [UIColor blueColor];
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,24 +69,29 @@
     
     cell.cardNumber.text = _selectedItem; //[[CardingModel sharedInstance].cards objectAtIndex:indexPath.item];
     
+    
+    if (cell.selected) {
+        cell.cardNumber.textColor = [UIColor greenColor];
+    }
+    
     cell.indexPath = indexPath;
     
     // the following should really be in the cell class, but so far I could not make it work that way
     
-#if 1
+#if 0
     // background
     
     //UIColor *backgroundPattern = [UIColor colorWithPatternImage:[UIImage imageNamed:@"paper.png"]];
     // background
     UIView *bgView = [[UIView alloc] initWithFrame:cell.frame];
-    bgView.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.0];
-    cell.selectedBackgroundView = bgView;
+    cell.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.0];
+    //cell.backgroundView = bgView;
     
     UIView *selectedBgView = [[UIView alloc] initWithFrame:cell.frame];
     selectedBgView.backgroundColor = [UIColor grayColor];
-    cell.selectedBackgroundView = selectedBgView;
+    //cell.selectedBackgroundView = selectedBgView;
     
-    cell.backgroundView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+    //cell.backgroundView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
     
     //cell.backgroundView.backgroundColor = backgroundColor;
     //cell.selectedBackgroundView.backgroundColor = [UIColor grayColor];

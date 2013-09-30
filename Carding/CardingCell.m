@@ -17,16 +17,17 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+#if 0
         // _cardNumber.text = @"00";
         
         // background
         UIView *bgView = [[UIView alloc] initWithFrame:frame];
-        bgView.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.0];
-        self.selectedBackgroundView = bgView;
+        //self.backgroundColor = [UIColor colorWithRed:0.0 green:0.98 blue:0.98 alpha:1.0];
+        //self.backgroundView = bgView;
         
         UIView *selectedBgView = [[UIView alloc] initWithFrame:frame];
         selectedBgView.backgroundColor = [UIColor grayColor];
-        self.selectedBackgroundView = selectedBgView;
+        //self.selectedBackgroundView = selectedBgView;
         
         // drop shadow
         self.layer.masksToBounds = NO;
@@ -34,6 +35,7 @@
         [self.layer setShadowOpacity:0.6];
         [self.layer setShadowRadius:5.0];
         [self.layer setShadowOffset:CGSizeMake(0.0, -0.0)];
+#endif
 
     }
     return self;

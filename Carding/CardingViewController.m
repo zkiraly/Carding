@@ -23,6 +23,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    self.title = @"Cards";
 
 }
 
@@ -68,14 +69,14 @@
     //UIColor *backgroundPattern = [UIColor colorWithPatternImage:[UIImage imageNamed:@"paper.png"]];
     // background
     UIView *bgView = [[UIView alloc] initWithFrame:cell.frame];
-    bgView.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.0];
-    cell.selectedBackgroundView = bgView;
+    cell.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.0];
+    //cell.backgroundView = bgView;
     
     UIView *selectedBgView = [[UIView alloc] initWithFrame:cell.frame];
     selectedBgView.backgroundColor = [UIColor grayColor];
-    cell.selectedBackgroundView = selectedBgView;
+    //cell.selectedBackgroundView = selectedBgView;
     
-    cell.backgroundView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+    //cell.backgroundView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
     
     //cell.backgroundView.backgroundColor = backgroundColor;
     //cell.selectedBackgroundView.backgroundColor = [UIColor grayColor];

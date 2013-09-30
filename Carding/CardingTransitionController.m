@@ -8,6 +8,12 @@
 
 #import "CardingTransitionController.h"
 
+
 @implementation CardingTransitionController
+
+- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
+    return 1.0;
+}
+
 
 @end
