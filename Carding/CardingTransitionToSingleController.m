@@ -31,9 +31,16 @@
     newVCFrame.origin.y = 64.0;
     
     // add the "to" view
-    // we can't take a snapshot of this view, as it's not been rendered.
-    // so this view will be animated directly
+    // get a snapshot using off-screen rendering
+    UIGraphicsBeginImageContext(toViewController.view.bounds.size);
+    [toViewController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImageView *toViewSnapshot = [[UIImageView alloc] initWithImage:viewImage];
+    
     [containerView addSubview:toViewController.view];
+    toViewController.view.hidden = YES;
+    [containerView addSubview:toViewSnapshot];
     
     // Get a snapshot of the thing cell we're transitioning from
     // we need snapshots of the elected cell, and all other visible cells
@@ -68,7 +75,7 @@
 
         // check if this is the selected cell
         if (cell.indexPath.item == selectedIndexPath.item) {
-            selectedSnapshot = toViewController.view; // maybe this is not needed
+            selectedSnapshot = toViewSnapshot; // maybe this is not needed
             [snapshots addObject:selectedSnapshot];
             // set its frame
             CGRect oldFrame = toViewController.view.frame;
@@ -126,7 +133,7 @@
             
         }
         // Move the toViewController's view to the final position
-        toViewController.view.frame = newVCFrame;
+        toViewSnapshot.frame = newVCFrame;
         
     } completion:^(BOOL finished) {
         // Clean up
@@ -141,6 +148,9 @@
             }
             
         }
+        
+        [toViewSnapshot removeFromSuperview];
+        toViewController.view.hidden = NO;
         
         // Declare that we've finished
         [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
