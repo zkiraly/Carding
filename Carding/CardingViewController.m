@@ -15,7 +15,7 @@
 #import "CardingTransitionToSingleController.h"
 
 @interface CardingViewController (){
-    NSInteger _selectedIndex;
+    
 }
 @end
 
@@ -86,7 +86,6 @@
     
     //UIColor *backgroundPattern = [UIColor colorWithPatternImage:[UIImage imageNamed:@"paper.png"]];
     // background
-    UIView *bgView = [[UIView alloc] initWithFrame:cell.frame];
     cell.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.0];
     //cell.backgroundView = bgView;
     
@@ -117,12 +116,12 @@
     
     if ([segue.destinationViewController isKindOfClass:[CardingSingleViewController class]]) {
         // Get the selected item index path
-        NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
+        _selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
         
         // Set the thing on the view controller we're about to show
-        if (selectedIndexPath != nil) {
+        if (_selectedIndexPath != nil) {
             CardingSingleViewController *secondViewController = (CardingSingleViewController *)segue.destinationViewController;
-            secondViewController.item = [[[CardingModel sharedInstance] cards] objectAtIndex:selectedIndexPath.item];
+            secondViewController.item = [[[CardingModel sharedInstance] cards] objectAtIndex:_selectedIndexPath.item];
         }
     }
 }
@@ -137,6 +136,14 @@
 }
 
 #pragma mark - UINavigationControllerDelegate methods
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if (viewController == self) {
+        // clear the selectedIndexPath after display
+        _selectedIndexPath = nil;
+    }
+    
+}
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation

@@ -7,6 +7,8 @@
 //
 
 #import "CardingSingleViewController.h"
+#import "CardingTransitionToListController.h"
+#import "CardingViewController.h"
 
 @interface CardingSingleViewController ()
 
@@ -61,9 +63,9 @@
                                                fromViewController:(UIViewController *)fromVC
                                                  toViewController:(UIViewController *)toVC {
     // Check if we're transitioning from this view controller to a DSLSecondViewController
-    if (fromVC == self && [toVC isKindOfClass:[CardingSingleViewController class]]) {
-        //return [[CardingTransitionController alloc] init];
-        return nil;
+    if (fromVC == self && [toVC isKindOfClass:[CardingViewController class]]) {
+        return [[CardingTransitionToListController alloc] init];
+        
     }
     else {
         return nil;

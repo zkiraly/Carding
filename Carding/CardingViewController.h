@@ -11,4 +11,6 @@
 
 @interface CardingViewController : CardingVCAncestor <UINavigationControllerDelegate>
 
+@property (nonatomic, retain) NSIndexPath* selectedIndexPath;
+
 @end
