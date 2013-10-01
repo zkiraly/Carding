@@ -11,6 +11,12 @@
 #import "CardingSingleViewController.h"
 #import "CardingCell.h"
 
+@interface CardingTransitionToListController() {
+    id <UIViewControllerContextTransitioning> _transitionContext;
+}
+
+@end
+
 @implementation CardingTransitionToListController
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
@@ -18,6 +24,9 @@
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
+    
+    // save the context
+    _transitionContext = transitionContext;
     
     CardingSingleViewController *fromViewController = (CardingSingleViewController*)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
@@ -127,6 +136,7 @@
         fromSnapshot.frame = fromFrame;
         
     } completion:^(BOOL finished) {
+        NSLog(@"CardingTransitionToListController animateTransition: in completion.");
         // remove the snapshots
         for (UIView *snapshot in snapshots) {
             [snapshot removeFromSuperview];
@@ -144,6 +154,28 @@
     }];
     
 
+}
+
+- (void)animationEnded:(BOOL)transitionCompleted {
+    NSLog(@"CardingTransitionToListController animationEnded: %@", transitionCompleted ? @"YES" : @"NO");
+    
+    CardingSingleViewController *fromViewController = (CardingSingleViewController*)[_transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    
+    CardingViewController *toViewController = (CardingViewController*)[_transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    
+    UIView *containerView = [_transitionContext containerView];
+    
+    if (!transitionCompleted) {
+        for (UIView *view in containerView.subviews) {
+            [view removeFromSuperview];
+        }
+        
+        [containerView addSubview:fromViewController.view];
+        fromViewController.view.alpha = 1.0;
+        fromViewController.view.hidden = NO;
+    }
+    
+    
 }
 
 
