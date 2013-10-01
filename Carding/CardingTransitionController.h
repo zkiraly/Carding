@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 resetBit. All rights reserved.
 //
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 @protocol CardingTransitionControllerDelegate <NSObject>
 -(void)interactionBeganAtPoint:(CGPoint)p;

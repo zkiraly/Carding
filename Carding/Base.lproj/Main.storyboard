@@ -42,11 +42,11 @@
                         <viewControllerLayoutGuide type="bottom" id="2na-mU-4Hu"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="04N-Ma-nOB">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="01" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fWC-9a-WdL">
-                                <rect key="frame" x="5" y="67" width="55" height="72"/>
+                                <rect key="frame" x="5" y="0.0" width="55" height="72"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="44"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
@@ -55,6 +55,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="shb-35-C1F"/>
                     <connections>
                         <outlet property="cardNumber" destination="fWC-9a-WdL" id="4tk-XW-4lE"/>

@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "CardingVCAncestor.h"
 
-@interface CardingViewController : CardingVCAncestor
+@interface CardingViewController : CardingVCAncestor <UINavigationControllerDelegate>
 
 @end

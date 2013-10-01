@@ -12,6 +12,7 @@
 #import "CardingSingleViewController.h"
 #import "CardingCell.h"
 #import "CardingModel.h"
+#import "CardingTransitionController.h"
 
 @interface CardingViewController (){
     NSInteger _selectedIndex;
@@ -31,6 +32,22 @@
 - (void)viewWillAppear:(BOOL)animated {
     //[self.collectionView reloadData];
     //[self.collectionViewLayout invalidateLayout];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // Set outself as the navigation controller's delegate so we're asked for a transitioning object
+    self.navigationController.delegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    // Stop being the navigation controller's delegate
+    if (self.navigationController.delegate == self) {
+        self.navigationController.delegate = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -105,7 +122,7 @@
         // Set the thing on the view controller we're about to show
         if (selectedIndexPath != nil) {
             CardingSingleViewController *secondViewController = (CardingSingleViewController *)segue.destinationViewController;
-            secondViewController.item = [NSString stringWithFormat:@"%2d", selectedIndexPath.item];;
+            secondViewController.item = [[[CardingModel sharedInstance] cards] objectAtIndex:selectedIndexPath.item];
         }
     }
 }
@@ -117,6 +134,21 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"CardingViewController collectionView:disSelectItemAtIndexPath");
     [self performSegueWithIdentifier:@"CELL_TO_DETAIL_SEGUE" sender:self];
+}
+
+#pragma mark - UINavigationControllerDelegate methods
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC {
+    // Check if we're transitioning from this view controller to a DSLSecondViewController
+    if (fromVC == self && [toVC isKindOfClass:[CardingSingleViewController class]]) {
+        return [[CardingTransitionController alloc] init];
+    }
+    else {
+        return nil;
+    }
 }
 
 @end
