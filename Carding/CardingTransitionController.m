@@ -25,36 +25,24 @@
     CardingSingleViewController *toViewController = (CardingSingleViewController*)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     UIView *containerView = [transitionContext containerView];
-    //UIView *collectionView = fromViewController.collectionView;
     
-    // Setup the initial view states
+    // Setup the final view states
     CGRect newVCFrame = [transitionContext finalFrameForViewController:toViewController];
-    //newVCFrame.size.height = 192.0 + 64.0;
     newVCFrame.origin.y = 64.0;
     
-    //toViewController.view.frame = newVCFrame;
+    // add the "to" view
+    // we can't take a snapshot of this view, as it's not been rendered.
+    // so this view will be animated directly
     [containerView addSubview:toViewController.view];
-    //UIView *toControllerSnapshot = [toViewController.view snapshotViewAfterScreenUpdates:NO];
     
-    //toViewController.view.alpha = 0;
-    //toViewController.view.hidden = YES;
-#if 0
-    UIGraphicsBeginImageContextWithOptions(toViewController.view.bounds.size, toViewController.view.opaque, [[UIScreen mainScreen] scale]);
-    [toViewController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    UIImageView *toControllerSnapshot = [[UIImageView alloc] initWithImage:image];
-#endif
     // Get a snapshot of the thing cell we're transitioning from
+    // we need snapshots of the elected cell, and all other visible cells
     NSIndexPath *selectedIndexPath = [[fromViewController.collectionView indexPathsForSelectedItems] firstObject];
-    //CardingCell *selectedCell = (CardingCell*)[fromViewController.collectionView cellForItemAtIndexPath:selectedIndexPath];
-    //UIView *cellImageSnapshot = [selectedCell snapshotViewAfterScreenUpdates:NO];
-    //cellImageSnapshot.frame = [collectionView convertRect:selectedCell.frame fromView:selectedCell.superview];
     
     NSMutableArray *visibleCellIndexPaths = [[fromViewController.collectionView indexPathsForVisibleItems] mutableCopy];
     NSMutableArray *snapshots = [[NSMutableArray alloc] initWithCapacity:visibleCellIndexPaths.count];
     
-    // sort the index paths by item
+    // sort the index paths by item, otherwise they are random order
     [visibleCellIndexPaths sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSInteger r1 = ((NSIndexPath*)obj1).item;
         NSInteger r2 = ((NSIndexPath*)obj2).item;
@@ -68,7 +56,6 @@
     }];
     
     UIView *selectedSnapshot = nil;
-    //UIView *toControllerSnapshot = [toViewController.view snapshotViewAfterScreenUpdates:NO];
     
     // now make snapshots and add them to containerView
     for (int i = 0; i < visibleCellIndexPaths.count; i++) {
@@ -76,18 +63,20 @@
         CardingCell *cell = (CardingCell *)[fromViewController.collectionView cellForItemAtIndexPath:visibleCellIndexPaths[i]];
         UIView *snapshot = [cell snapshotViewAfterScreenUpdates:NO];
         
+        // convert the frame of the cell to containerView coords
         CGRect newFrame = [containerView convertRect:cell.frame fromView:cell.superview];
 
         // check if this is the selected cell
-        
         if (cell.indexPath.item == selectedIndexPath.item) {
-            selectedSnapshot = toViewController.view;
+            selectedSnapshot = toViewController.view; // maybe this is not needed
             [snapshots addObject:selectedSnapshot];
             // set its frame
             CGRect oldFrame = toViewController.view.frame;
             oldFrame.origin.y = newFrame.origin.y;
             selectedSnapshot.frame = newFrame;
+            // add to the containerView
             [containerView addSubview:selectedSnapshot];
+            // set the proper drop shadow
             selectedSnapshot.layer.masksToBounds = NO;
             [selectedSnapshot.layer setShadowColor:[UIColor blackColor].CGColor];
             [selectedSnapshot.layer setShadowOpacity:0.6];
@@ -100,35 +89,21 @@
             snapshot.frame = newFrame;
             // add it to the container
             [containerView addSubview:snapshot];
+            // set the drop-shadow
+            snapshot.layer.masksToBounds = NO;
+            [snapshot.layer setShadowColor:[UIColor blackColor].CGColor];
+            [snapshot.layer setShadowOpacity:0.6];
+            [snapshot.layer setShadowRadius:5.0];
+            [snapshot.layer setShadowOffset:CGSizeMake(0.0, -0.0)];
+            [snapshot.layer setShadowPath:[[UIBezierPath bezierPathWithRect:cell.bounds] CGPath]];
         }
-        
-        
-        // set its frame
-        //snapshot.frame = [containerView convertRect:cell.frame fromView:cell.superview];
-        // drop shadow
-        snapshot.layer.masksToBounds = NO;
-        [snapshot.layer setShadowColor:[UIColor blackColor].CGColor];
-        [snapshot.layer setShadowOpacity:0.6];
-        [snapshot.layer setShadowRadius:5.0];
-        [snapshot.layer setShadowOffset:CGSizeMake(0.0, -0.0)];
-        [snapshot.layer setShadowPath:[[UIBezierPath bezierPathWithRect:cell.bounds] CGPath]];
-        
-        
     }
     
-    //cell.hidden = YES;
+    // hide the collection view before the animation
     fromViewController.collectionView.hidden = YES;
     
-    
-    //[collectionView addSubview:cellImageSnapshot];
-    //cellImageSnapshot.layer.zPosition = indexPath.item;
-    
+    // perform the animation
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-        // Fade in the second view controller's view
-        toViewController.view.alpha = 1.0;
-        
-        
-        
         // move all snapshots lower than the selected, to the bottom edge of the screen
         for (UIView *snapshot in snapshots)
         {
@@ -136,32 +111,24 @@
                 CGRect frame = snapshot.frame;
                 frame.origin.y = [UIScreen mainScreen].bounds.size.height+20.0;
                 snapshot.frame = frame;
-            }
-#if 1
-            else if (snapshot.frame.origin.y < selectedSnapshot.frame.origin.y && snapshot != selectedSnapshot) {
+            } else if (snapshot.frame.origin.y < selectedSnapshot.frame.origin.y && snapshot != selectedSnapshot) {
+                // move the cells above the selected to the top edge
                 CGRect frame = snapshot.frame;
-                //frame.origin.y = [UIScreen mainScreen].bounds.size.height / 2.0 - 100.0;
                 frame.origin.y = 64.0;
                 snapshot.frame = frame;
             } else {
-                // it is the toViewController view
-                //toViewController.view.frame = newVCFrame;
+                // nothing to do if this is the selected item
+                // as this is done outside this loop
             }
-#endif
-            //toViewController.view.frame = newVCFrame;
             
         }
-        // Move the cell snapshot so it's over the second view controller's image view
-        CGRect frame = [containerView convertRect:toViewController.view.frame fromView:toViewController.view];
-
+        // Move the toViewController's view to the final position
         toViewController.view.frame = newVCFrame;
         
     } completion:^(BOOL finished) {
         // Clean up
-        toViewController.view.hidden = NO;
-        //cell.hidden = NO;
+        // unhide the collection view
         fromViewController.collectionView.hidden = NO;
-        //[cellImageSnapshot removeFromSuperview];
         
         // remove the snapshots
         for (UIView *snapshot in snapshots)
@@ -171,7 +138,6 @@
             }
             
         }
-        //[toControllerSnapshot removeFromSuperview];
         
         // Declare that we've finished
         [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
