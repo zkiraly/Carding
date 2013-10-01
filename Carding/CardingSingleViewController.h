@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CardingSingleViewController : UIViewController
+@interface CardingSingleViewController : UIViewController <UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *cardNumber;
 @property (nonatomic, retain) NSString *item;

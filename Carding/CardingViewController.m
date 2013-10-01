@@ -12,7 +12,7 @@
 #import "CardingSingleViewController.h"
 #import "CardingCell.h"
 #import "CardingModel.h"
-#import "CardingTransitionController.h"
+#import "CardingTransitionToSingleController.h"
 
 @interface CardingViewController (){
     NSInteger _selectedIndex;
@@ -144,7 +144,7 @@
                                                  toViewController:(UIViewController *)toVC {
     // Check if we're transitioning from this view controller to a DSLSecondViewController
     if (fromVC == self && [toVC isKindOfClass:[CardingSingleViewController class]]) {
-        return [[CardingTransitionController alloc] init];
+        return [[CardingTransitionToSingleController alloc] init];
     }
     else {
         return nil;

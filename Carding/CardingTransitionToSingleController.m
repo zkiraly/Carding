@@ -7,14 +7,14 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
-#import "CardingTransitionController.h"
+#import "CardingTransitionToSingleController.h"
 #import "CardingViewController.h"
 #import "CardingSingleViewController.h"
 #import "CardingCell.h"
 
 
 
-@implementation CardingTransitionController
+@implementation CardingTransitionToSingleController
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
     return 0.8;
@@ -73,6 +73,7 @@
             // set its frame
             CGRect oldFrame = toViewController.view.frame;
             oldFrame.origin.y = newFrame.origin.y;
+            newFrame.size.height = oldFrame.size.height;
             selectedSnapshot.frame = newFrame;
             // add to the containerView
             [containerView addSubview:selectedSnapshot];
@@ -109,12 +110,14 @@
         {
             if (snapshot.frame.origin.y > selectedSnapshot.frame.origin.y && snapshot != selectedSnapshot) {
                 CGRect frame = snapshot.frame;
-                frame.origin.y = [UIScreen mainScreen].bounds.size.height+20.0;
+                //frame.origin.y = [UIScreen mainScreen].bounds.size.height+20.0;
+                frame.origin.y +=500.0;
                 snapshot.frame = frame;
             } else if (snapshot.frame.origin.y < selectedSnapshot.frame.origin.y && snapshot != selectedSnapshot) {
                 // move the cells above the selected to the top edge
                 CGRect frame = snapshot.frame;
-                frame.origin.y = 64.0;
+                //frame.origin.y = 64.0;
+                frame.origin.y += 500.0;
                 snapshot.frame = frame;
             } else {
                 // nothing to do if this is the selected item

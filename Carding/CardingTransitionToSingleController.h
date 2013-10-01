@@ -12,7 +12,7 @@
 -(void)interactionBeganAtPoint:(CGPoint)p;
 @end
 
-@interface CardingTransitionController : NSObject <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
+@interface CardingTransitionToSingleController : NSObject <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
 
 @property (nonatomic) id <CardingTransitionControllerDelegate> delegate;
 @property (nonatomic) BOOL hasActiveInteraction;
