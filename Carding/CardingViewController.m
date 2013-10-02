@@ -17,7 +17,7 @@
 @interface CardingViewController (){
     
 }
-@property (nonatomic, strong) UIPercentDrivenInteractiveTransition *interactivePushTransition;
+@property (nonatomic, strong) CardingTransitionToSingleController *interactiveAnimatedPushTransition;
 
 @end
 
@@ -28,8 +28,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.title = @"Cards";
+    self.interactiveAnimatedPushTransition = [[CardingTransitionToSingleController alloc] initWithParentViewController:self];
 
-    UIPanGestureRecognizer *pushRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePushRecognizer:)];
+    UIPanGestureRecognizer *pushRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self.interactiveAnimatedPushTransition action:@selector(userDidPan:)];
     [self.collectionView addGestureRecognizer:pushRecognizer];
 }
 
@@ -155,7 +156,8 @@
                                                  toViewController:(UIViewController *)toVC {
     // Check if we're transitioning from this view controller to a DSLSecondViewController
     if (fromVC == self && [toVC isKindOfClass:[CardingSingleViewController class]]) {
-        return [[CardingTransitionToSingleController alloc] init];
+        NSLog(@"CardingViewController returning an animationController");
+        return self.interactiveAnimatedPushTransition;
     }
     else {
         return nil;
@@ -164,15 +166,18 @@
 
 - (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
                          interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController {
+    
     // Check if this is for our custom transition
-    if ([animationController isKindOfClass:[CardingTransitionToSingleController class]]) {
-        return self.interactivePushTransition;
+    if ([animationController isKindOfClass:[CardingTransitionToSingleController class]] && [_interactiveAnimatedPushTransition isInteractive]) {
+        NSLog(@"CardingViewController returning an interactionController");
+        return self.interactiveAnimatedPushTransition;
     }
     else {
         return nil;
     }
 }
 
+#if 0
 #pragma mark UIGestureRecognizer handlers
 
 - (void)handlePushRecognizer:(UIPanGestureRecognizer*)recognizer {
@@ -189,7 +194,7 @@
         startingDistanceToTop = touch.y;
         
         // Create a interactive transition and pop the view controller
-        self.interactivePushTransition = [[UIPercentDrivenInteractiveTransition alloc] init];
+        self.interactiveAnimatedPushTransition = [[CardingTransitionToSingleController alloc] init];
         
         // get the cell index path under that touch
         NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:touch];
@@ -220,7 +225,7 @@
             dragingView.frame = viewFrame;
         }];
         
-        [self.interactivePushTransition updateInteractiveTransition:progress];
+        [self.interactiveAnimatedPushTransition updateInteractiveTransition:progress];
     }
     else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
         // Finish or cancel the interactive transition
@@ -230,7 +235,7 @@
         NSLog(@"touches x: %f y: %f progress: %f", touch.x, touch.y, progress);
         
         if (progress > 0.5) {
-            [self.interactivePushTransition finishInteractiveTransition];
+            [self.interactiveAnimatedPushTransition finishInteractiveTransition];
             // get the UIView we need to drag
             UIView *dragingView = [self.navigationController.view viewWithTag:101101];
             CGRect viewFrame = dragingView.frame;
@@ -242,6 +247,7 @@
             }];
         }
         else {
+            NSLog(@"Cancelling the interactive transition");
             // remove the views used for animation, and restore the collection view
             
             
@@ -255,14 +261,15 @@
                 dragingView.frame = viewFrame;
             }];
             
-            [self.interactivePushTransition cancelInteractiveTransition];
+            [self.interactiveAnimatedPushTransition cancelInteractiveTransition];
 
         }
         
         
-        self.interactivePushTransition = nil;
+        self.interactiveAnimatedPushTransition = nil;
     }
     
 }
+#endif
 
 @end

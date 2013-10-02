@@ -7,16 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CardingViewController.h"
 
 @protocol CardingTransitionToSingleControllerDelegate <NSObject>
 -(void)interactionBeganAtPoint:(CGPoint)p;
 @end
 
-@interface CardingTransitionToSingleController : NSObject <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
+@interface CardingTransitionToSingleController : UIPercentDrivenInteractiveTransition <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
+
+- (id)initWithParentViewController:(CardingViewController *)viewController;
 
 @property (nonatomic) id <CardingTransitionToSingleControllerDelegate> delegate;
 @property (nonatomic) BOOL hasActiveInteraction;
 @property (nonatomic) UINavigationControllerOperation navigationOperation;
 @property (nonatomic) UICollectionView* collectionView;
+
+@property (nonatomic, readonly) CardingViewController *parentViewController;
+@property (nonatomic, assign, getter = isInteractive) BOOL interactive;
 
 @end
