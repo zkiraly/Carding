@@ -17,7 +17,7 @@
 @implementation CardingTransitionToSingleController
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
-    return 0.8;
+    return 0.5;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
@@ -37,10 +37,11 @@
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     UIImageView *toViewSnapshot = [[UIImageView alloc] initWithImage:viewImage];
+    toViewSnapshot.tag = 101101;
     
     [containerView addSubview:toViewController.view];
     toViewController.view.hidden = YES;
-    [containerView addSubview:toViewSnapshot];
+    //[containerView addSubview:toViewSnapshot];
     
     // Get a snapshot of the thing cell we're transitioning from
     // we need snapshots of the elected cell, and all other visible cells
@@ -81,7 +82,7 @@
             CGRect oldFrame = toViewController.view.frame;
             oldFrame.origin.y = newFrame.origin.y;
             newFrame.size.height = oldFrame.size.height;
-            selectedSnapshot.frame = newFrame;
+            //selectedSnapshot.frame = newFrame;
             // add to the containerView
             [containerView addSubview:selectedSnapshot];
             // set the proper drop shadow
@@ -133,7 +134,7 @@
             
         }
         // Move the toViewController's view to the final position
-        toViewSnapshot.frame = newVCFrame;
+        //toViewSnapshot.frame = newVCFrame;
         
     } completion:^(BOOL finished) {
         // Clean up

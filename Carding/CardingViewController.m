@@ -17,6 +17,8 @@
 @interface CardingViewController (){
     
 }
+@property (nonatomic, strong) UIPercentDrivenInteractiveTransition *interactivePushTransition;
+
 @end
 
 @implementation CardingViewController
@@ -27,6 +29,8 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.title = @"Cards";
 
+    UIPanGestureRecognizer *pushRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePushRecognizer:)];
+    [self.collectionView addGestureRecognizer:pushRecognizer];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -156,6 +160,109 @@
     else {
         return nil;
     }
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
+                         interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController {
+    // Check if this is for our custom transition
+    if ([animationController isKindOfClass:[CardingTransitionToSingleController class]]) {
+        return self.interactivePushTransition;
+    }
+    else {
+        return nil;
+    }
+}
+
+#pragma mark UIGestureRecognizer handlers
+
+- (void)handlePushRecognizer:(UIPanGestureRecognizer*)recognizer {
+    static CGFloat startingDistanceToTop;
+    static UIView *cardToPan = nil;
+    static CGPoint offset;
+    static CGPoint startingFrameOrigin;
+    CGPoint touch = [recognizer locationInView:self.collectionView];
+    CGFloat progress;
+    NSLog(@"CardingViewController handlePushRecognizer");
+    
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        // get distance to the top
+        startingDistanceToTop = touch.y;
+        
+        // Create a interactive transition and pop the view controller
+        self.interactivePushTransition = [[UIPercentDrivenInteractiveTransition alloc] init];
+        
+        // get the cell index path under that touch
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:touch];
+        offset = [recognizer locationInView:[self.collectionView cellForItemAtIndexPath:indexPath]];
+        startingFrameOrigin = [self.collectionView cellForItemAtIndexPath:indexPath].frame.origin;
+        NSLog(@"offset x: %f, y: %f", offset.x, offset.y);
+        [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        // now initiate the push
+        [self collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+        
+        
+        
+    }
+    else if (recognizer.state == UIGestureRecognizerStateChanged) {
+        // Update the interactive transition's progress
+        progress = -1*[recognizer translationInView:self.view].y / startingDistanceToTop;
+        progress = MIN(1.0, MAX(0.0, progress));
+        
+        NSLog(@"touches x: %f y: %f progress: %f", touch.x, touch.y, progress);
+        
+        // get the UIView we need to drag
+        UIView *dragingView = [self.navigationController.view viewWithTag:101101];
+        CGRect viewFrame = dragingView.frame;
+        //viewFrame.origin.x = touch.x - offset.x;
+        viewFrame.origin.y = touch.y - offset.y+64.0;
+        // animate
+        [UIView animateWithDuration:0.1 animations:^{
+            dragingView.frame = viewFrame;
+        }];
+        
+        [self.interactivePushTransition updateInteractiveTransition:progress];
+    }
+    else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
+        // Finish or cancel the interactive transition
+        progress = -1*[recognizer translationInView:self.view].y / startingDistanceToTop;
+        progress = MIN(1.0, MAX(0.0, progress));
+        
+        NSLog(@"touches x: %f y: %f progress: %f", touch.x, touch.y, progress);
+        
+        if (progress > 0.5) {
+            [self.interactivePushTransition finishInteractiveTransition];
+            // get the UIView we need to drag
+            UIView *dragingView = [self.navigationController.view viewWithTag:101101];
+            CGRect viewFrame = dragingView.frame;
+            //viewFrame.origin.x = touch.x - offset.x;
+            viewFrame.origin.y = 0.0+64.0;
+            // animate
+            [UIView animateWithDuration:0.3 animations:^{
+                dragingView.frame = viewFrame;
+            }];
+        }
+        else {
+            // remove the views used for animation, and restore the collection view
+            
+            
+            // get the UIView we need to drag
+            UIView *dragingView = [self.navigationController.view viewWithTag:101101];
+            CGRect viewFrame = dragingView.frame;
+            //viewFrame.origin.x = touch.x - offset.x;
+            viewFrame.origin.y = startingFrameOrigin.y;
+            // animate
+            [UIView animateWithDuration:1.0 animations:^{
+                dragingView.frame = viewFrame;
+            }];
+            
+            [self.interactivePushTransition cancelInteractiveTransition];
+
+        }
+        
+        
+        self.interactivePushTransition = nil;
+    }
+    
 }
 
 @end
