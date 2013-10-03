@@ -270,6 +270,7 @@
 
 -(void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
     //[super startInteractiveTransition:transitionContext];
+    NSLog(@"UIViewControllerInteractiveTransitioning startInteractiveTransition:");
     
     self.transitionContext = transitionContext;
     
@@ -285,6 +286,8 @@
 #pragma mark - UIPercentDrivenInteractiveTransition Overridden Methods
 
 - (void)updateInteractiveTransition:(CGFloat)percentComplete {
+    NSLog(@"UIViewControllerInteractiveTransitioning updateInteractiveTransition:");
+    
     //[super updateInteractiveTransition:percentComplete];
     
     
@@ -293,10 +296,13 @@
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
+    [transitionContext updateInteractiveTransition:0.2];
     
 }
 
 - (void)finishInteractiveTransition {
+    NSLog(@"UIViewControllerInteractiveTransitioning finishInteractiveTransition");
+    
     //[super finishInteractiveTransition];
     
     NSLog(@"CardingTransitoinToSingleController finishInteractiveTransition");
@@ -308,11 +314,14 @@
     
     
     //[transitionContext completeTransition:!transitionContext.transitionWasCancelled];
+    [transitionContext finishInteractiveTransition];
+    [transitionContext completeTransition:YES];
     self.interactive = NO;
     
 }
 
 - (void)cancelInteractiveTransition {
+    NSLog(@"UIViewControllerInteractiveTransitioning cancelInteractiveTransition");
     //[super cancelInteractiveTransition];
     
     NSLog(@"CardingTransitoinToSingleController cancelInteractiveTransition");
@@ -330,6 +339,7 @@
     [containerView addSubview:fromViewController.view];
 #endif
     [transitionContext cancelInteractiveTransition];
+    [transitionContext completeTransition:NO];
     
     //[transitionContext completeTransition:transitionContext.transitionWasCancelled];
     self.interactive = NO;

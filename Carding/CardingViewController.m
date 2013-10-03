@@ -49,6 +49,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    NSLog(@"CardingViewController viewWillDisappear");
     [super viewWillDisappear:animated];
     
     // Stop being the navigation controller's delegate
@@ -192,6 +193,7 @@
     NSLog(@"CardingViewController handlePushRecognizer");
     
     if (recognizer.state == UIGestureRecognizerStateBegan) {
+        NSLog(@"UIGestureRecognizerStateBegan");
         // get distance to the top
         startingDistanceToTop = touch.y;
         
@@ -211,6 +213,7 @@
         
     }
     else if (recognizer.state == UIGestureRecognizerStateChanged) {
+        NSLog(@"UIGestureRecognizerStateChanged");
         // Update the interactive transition's progress
         progress = -1*[recognizer translationInView:self.view].y / startingDistanceToTop;
         progress = MIN(1.0, MAX(0.0, progress));
@@ -230,6 +233,7 @@
         [self.interactiveAnimatedPushTransition updateInteractiveTransition:progress];
     }
     else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
+        NSLog(@"UIGestureRecognizerStateEnded || UIGestureRecognizerStateCancelled");
         // Finish or cancel the interactive transition
         progress = -1*[recognizer translationInView:self.view].y / startingDistanceToTop;
         progress = MIN(1.0, MAX(0.0, progress));

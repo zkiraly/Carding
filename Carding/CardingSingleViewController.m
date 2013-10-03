@@ -40,10 +40,12 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    NSLog(@"CardingSingeViewController viewWillAppear:");
     [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    NSLog(@"CardingSingeViewController viewDidAppear:");
     [super viewDidAppear:animated];
     
     // Set outself as the navigation controller's delegate so we're asked for a transitioning object
@@ -51,6 +53,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    NSLog(@"CardingSingeViewController viewWillDisappear:");
     [super viewWillDisappear:animated];
     
     // Stop being the navigation controller's delegate
