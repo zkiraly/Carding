@@ -40,29 +40,38 @@
     static UIView *cardToPan = nil;
     static CGPoint offset;
     static CGPoint startingFrameOrigin;
+    static CGPoint startingTouch;
+    CGPoint touch = [recognizer locationInView:_parentViewController.collectionView];
     CGFloat progress;
     NSLog(@"CardingTransitionToSingleController handlePushRecognizer");
     
     CGPoint location = [recognizer locationInView:self.parentViewController.view];
+    
     //CGPoint velocity = [recognizer velocityInView:self.parentViewController.view];
     
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         NSLog(@"got UIGestureRecognizerStateBegan");
 #if 1
+
+
         // We're being invoked via a gesture recognizer – we are necessarily interactive
         self.interactive = YES;
         // start the transition
         // get distance to the top
+        //location.y -=64.0;
         startingDistanceToTop = location.y;
+        startingTouch = location;
         
         // Create a interactive transition and pop the view controller
         //_parentViewController.interactiveAnimatedPushTransition = self;
         
         // get the cell index path under that touch
-        NSIndexPath *indexPath = [_parentViewController.collectionView indexPathForItemAtPoint:location];
+        CGPoint collectionViewLocation = [_parentViewController.collectionView convertPoint:location fromView:_parentViewController.view];
+        NSIndexPath *indexPath = [_parentViewController.collectionView indexPathForItemAtPoint:collectionViewLocation];
         
         offset = [recognizer locationInView:[_parentViewController.collectionView cellForItemAtIndexPath:indexPath]];
-        startingFrameOrigin = [self.collectionView cellForItemAtIndexPath:indexPath].frame.origin;
+        CGPoint startingFrameOriginInCollectionView = [_parentViewController.collectionView cellForItemAtIndexPath:indexPath].frame.origin;
+        startingFrameOrigin = [_parentViewController.view convertPoint:startingFrameOriginInCollectionView fromView:_parentViewController.collectionView];
         NSLog(@"offset x: %f, y: %f", offset.x, offset.y);
         [_parentViewController.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         // now initiate the push
@@ -72,15 +81,69 @@
     }
     else if (recognizer.state == UIGestureRecognizerStateChanged) {
         NSLog(@"got UIGestureRecognizerStateChanged");
+        // Update the interactive transition's progress
+        progress = -1*(location.y - startingTouch.y) / startingDistanceToTop;
+        progress = MIN(1.0, MAX(0.0, progress));
+        CGPoint touchInContainerView = [_parentViewController.view convertPoint:touch fromView:_parentViewController.collectionView];
         
+        NSLog(@"touches x: %f y: %f progress: %f", touchInContainerView.x, touchInContainerView.y, progress);
+        
+        // get the UIView we need to drag
+        UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
+        CGRect viewFrame = dragingView.frame;
+        //viewFrame.origin.x = touch.x - offset.x;
+        viewFrame.origin.y = touchInContainerView.y - offset.y;//+64.0;
+        NSLog(@"Newframe location: %f", viewFrame.origin.y);
+        // animate
+        [UIView animateWithDuration:0.02 animations:^{
+            dragingView.frame = viewFrame;
+        }];
+
+        [self updateInteractiveTransition:progress];
         
     }
     else if (recognizer.state == UIGestureRecognizerStateEnded) {
         // Depending on our state and the velocity, determine whether to cancel or complete the transition.
         NSLog(@"got UIGestureRecognizerStateEnded");
         
-        //[self finishInteractiveTransition];
-        [self cancelInteractiveTransition];
+        // Finish or cancel the interactive transition
+        progress = -1*(location.y - startingTouch.y) / startingDistanceToTop;
+        progress = MIN(1.0, MAX(0.0, progress));
+        
+        NSLog(@"touches x: %f y: %f progress: %f", touch.x, touch.y, progress);
+        
+        if (progress > 0.25) {
+            [self finishInteractiveTransition];
+            // get the UIView we need to drag
+            UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
+            CGRect viewFrame = dragingView.frame;
+            //viewFrame.origin.x = touch.x - offset.x;
+            viewFrame.origin.y = 0.0+64.0;
+            // animate
+            [UIView animateWithDuration:[self duration]*progress animations:^{
+                dragingView.frame = viewFrame;
+            }];
+        }
+        else {
+            NSLog(@"Cancelling the interactive transition");
+            // remove the views used for animation, and restore the collection view
+            
+            
+            // get the UIView we need to drag
+            UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
+            CGRect viewFrame = dragingView.frame;
+            //viewFrame.origin.x = touch.x - offset.x;
+            viewFrame.origin.y = startingFrameOrigin.y;
+            // animate
+            [UIView animateWithDuration:[self duration]*progress animations:^{
+                dragingView.frame = viewFrame;
+            }];
+            
+            [self cancelInteractiveTransition];
+            
+        }
+
+        //[self cancelInteractiveTransition];
     }
 }
 
@@ -129,8 +192,9 @@
     UIImageView *toViewSnapshot = [[UIImageView alloc] initWithImage:viewImage];
     toViewSnapshot.tag = 101101;
     
-    [containerView addSubview:toViewController.view];
+    
     toViewController.view.hidden = YES;
+    [containerView addSubview:toViewController.view];
     //[containerView addSubview:toViewSnapshot];
     
     // Get a snapshot of the thing cell we're transitioning from
@@ -224,7 +288,10 @@
             
         }
         // Move the toViewController's view to the final position
-        toViewSnapshot.frame = newVCFrame;
+        if (!self.interactive) {
+            toViewSnapshot.frame = newVCFrame;
+        }
+        
         
     } completion:^(BOOL finished) {
         NSLog(@"Animation completions block, finished: %@", finished ? @"YES" : @"NO");
@@ -269,13 +336,16 @@
 #pragma mark - UIViewControllerInteractiveTransitioning Methods
 
 -(void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-    //[super startInteractiveTransition:transitionContext];
+    [super startInteractiveTransition:transitionContext];
     NSLog(@"UIViewControllerInteractiveTransitioning startInteractiveTransition:");
     
     self.transitionContext = transitionContext;
     
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    
+    //[[transitionContext containerView] addSubview:toViewController.view];
+    
     
     CGRect endFrame = [[transitionContext containerView] bounds];
     
@@ -288,7 +358,7 @@
 - (void)updateInteractiveTransition:(CGFloat)percentComplete {
     NSLog(@"UIViewControllerInteractiveTransitioning updateInteractiveTransition:");
     
-    //[super updateInteractiveTransition:percentComplete];
+    [super updateInteractiveTransition:percentComplete];
     
     
     id<UIViewControllerContextTransitioning> transitionContext = self.transitionContext;
@@ -296,14 +366,14 @@
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
-    [transitionContext updateInteractiveTransition:0.2];
+    [transitionContext updateInteractiveTransition:percentComplete];
     
 }
 
 - (void)finishInteractiveTransition {
     NSLog(@"UIViewControllerInteractiveTransitioning finishInteractiveTransition");
     
-    //[super finishInteractiveTransition];
+    [super finishInteractiveTransition];
     
     NSLog(@"CardingTransitoinToSingleController finishInteractiveTransition");
     id<UIViewControllerContextTransitioning> transitionContext = self.transitionContext;
@@ -315,14 +385,14 @@
     
     //[transitionContext completeTransition:!transitionContext.transitionWasCancelled];
     [transitionContext finishInteractiveTransition];
-    [transitionContext completeTransition:YES];
+    //[transitionContext completeTransition:YES];
     self.interactive = NO;
     
 }
 
 - (void)cancelInteractiveTransition {
     NSLog(@"UIViewControllerInteractiveTransitioning cancelInteractiveTransition");
-    //[super cancelInteractiveTransition];
+    [super cancelInteractiveTransition];
     
     NSLog(@"CardingTransitoinToSingleController cancelInteractiveTransition");
     
@@ -339,7 +409,7 @@
     [containerView addSubview:fromViewController.view];
 #endif
     [transitionContext cancelInteractiveTransition];
-    [transitionContext completeTransition:NO];
+    //[transitionContext completeTransition:NO];
     
     //[transitionContext completeTransition:transitionContext.transitionWasCancelled];
     self.interactive = NO;
