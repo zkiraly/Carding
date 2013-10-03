@@ -13,7 +13,7 @@
 -(void)interactionBeganAtPoint:(CGPoint)p;
 @end
 
-@interface CardingTransitionToSingleController : UIPercentDrivenInteractiveTransition <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
+@interface CardingTransitionToSingleController : NSObject <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
 
 - (id)initWithParentViewController:(CardingViewController *)viewController;
 

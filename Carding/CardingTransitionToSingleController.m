@@ -48,7 +48,7 @@
     
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         NSLog(@"got UIGestureRecognizerStateBegan");
-#if 0
+#if 1
         // We're being invoked via a gesture recognizer – we are necessarily interactive
         self.interactive = YES;
         // start the transition
@@ -60,6 +60,7 @@
         
         // get the cell index path under that touch
         NSIndexPath *indexPath = [_parentViewController.collectionView indexPathForItemAtPoint:location];
+        
         offset = [recognizer locationInView:[_parentViewController.collectionView cellForItemAtIndexPath:indexPath]];
         startingFrameOrigin = [self.collectionView cellForItemAtIndexPath:indexPath].frame.origin;
         NSLog(@"offset x: %f, y: %f", offset.x, offset.y);
@@ -98,13 +99,17 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
     NSLog(@"CardingTransitionToSingleController animateTransition:");
+    
+#if 0
     if(self.interactive) {
         NSLog(@"It is an interactive transition");
         
         
         return;
     }
+    
     NSLog(@"It is a NON-interactive transition");
+#endif
     
     CardingViewController *fromViewController = (CardingViewController*)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     CardingSingleViewController *toViewController = (CardingSingleViewController*)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
@@ -224,10 +229,27 @@
     } completion:^(BOOL finished) {
         NSLog(@"Animation completions block, finished: %@", finished ? @"YES" : @"NO");
         NSLog(@"Transition canceled: %@", [transitionContext transitionWasCancelled] ? @"YES": @"NO");
+
+        if ([transitionContext transitionWasCancelled]) {
+            NSLog(@"Completion block: transition cancelled");
+            // Clean up
+            // unhide the collection view
+            fromViewController.collectionView.hidden = NO;
+            fromViewController.collectionView.alpha = 1.0;
+            [toViewController.view removeFromSuperview];
+            [transitionContext completeTransition:NO];
+
+        } else {
+            NSLog(@"Completion block: transition completed");
+            toViewController.view.hidden = NO;
+            toViewController.view.alpha = 1.0;
+            fromViewController.collectionView.hidden = NO;
+            fromViewController.collectionView.alpha = 1.0;
+            fromViewController.view.hidden = NO;
+            fromViewController.view.alpha = 1.0;
+            [transitionContext completeTransition:YES];
+        }
         
-        // Clean up
-        // unhide the collection view
-        fromViewController.collectionView.hidden = NO;
         
         // remove the snapshots
         for (UIView *snapshot in snapshots)
@@ -237,18 +259,18 @@
             }
             
         }
-        
+       
         [toViewSnapshot removeFromSuperview];
-        toViewController.view.hidden = NO;
-        
-        // Declare that we've finished
-        [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
     }];
+
+    
 }
 
 #pragma mark - UIViewControllerInteractiveTransitioning Methods
 
 -(void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
+    //[super startInteractiveTransition:transitionContext];
+    
     self.transitionContext = transitionContext;
     
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
@@ -256,7 +278,6 @@
     
     CGRect endFrame = [[transitionContext containerView] bounds];
     
-    //[super startInteractiveTransition:transitionContext];
     
 }
 
@@ -264,16 +285,20 @@
 #pragma mark - UIPercentDrivenInteractiveTransition Overridden Methods
 
 - (void)updateInteractiveTransition:(CGFloat)percentComplete {
+    //[super updateInteractiveTransition:percentComplete];
+    
+    
     id<UIViewControllerContextTransitioning> transitionContext = self.transitionContext;
     
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
-    //[super updateInteractiveTransition:percentComplete];
     
 }
 
 - (void)finishInteractiveTransition {
+    //[super finishInteractiveTransition];
+    
     NSLog(@"CardingTransitoinToSingleController finishInteractiveTransition");
     id<UIViewControllerContextTransitioning> transitionContext = self.transitionContext;
     
@@ -282,22 +307,31 @@
     
     
     
-    [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
+    //[transitionContext completeTransition:!transitionContext.transitionWasCancelled];
     self.interactive = NO;
     
 }
 
 - (void)cancelInteractiveTransition {
+    //[super cancelInteractiveTransition];
+    
     NSLog(@"CardingTransitoinToSingleController cancelInteractiveTransition");
     
     id<UIViewControllerContextTransitioning> transitionContext = self.transitionContext;
     
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+#if 0
+    UIView *containerView = [transitionContext containerView];
+    NSArray *subviews = [containerView subviews];
+    for (UIView *view in subviews) {
+        [view removeFromSuperview];
+    }
+    [containerView addSubview:fromViewController.view];
+#endif
+    [transitionContext cancelInteractiveTransition];
     
-    
-    
-    [transitionContext completeTransition:transitionContext.transitionWasCancelled];
+    //[transitionContext completeTransition:transitionContext.transitionWasCancelled];
     self.interactive = NO;
 }
 

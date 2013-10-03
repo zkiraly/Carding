@@ -35,6 +35,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     //[self.collectionView reloadData];
     //[self.collectionViewLayout invalidateLayout];
 }
@@ -44,6 +45,7 @@
     
     // Set outself as the navigation controller's delegate so we're asked for a transitioning object
     self.navigationController.delegate = self;
+    //NSLog(@"%@", [self.navigationController.view recursiveDescription]);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

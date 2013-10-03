@@ -149,7 +149,7 @@
         toViewController.view.alpha = 1.0;
         
         // Declare that we've finished
-        [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
+        [transitionContext completeTransition:YES];
     
     }];
     
@@ -215,10 +215,10 @@
     selectedCell.alpha = 0.0;
     //selectedCell.hidden = YES;
     UIColor *collectionViewBgColor = toViewController.collectionView.backgroundColor;
-    toViewController.collectionView.backgroundColor = [UIColor clearColor];
+    //toViewController.collectionView.backgroundColor = [UIColor clearColor];
     
     UIColor *toViewBgColor = toViewController.view.backgroundColor;
-    toViewController.view.backgroundColor = [UIColor clearColor];
+    //toViewController.view.backgroundColor = [UIColor clearColor];
     
     // set the collectionview offset
     toViewController.collectionView.contentOffset = selectedCellFrame.origin;
@@ -239,15 +239,19 @@
         selectedCell.hidden = NO;
         selectedCell.alpha = 1.0;
         
-        toViewController.collectionView.backgroundColor = collectionViewBgColor;
-        toViewController.view.backgroundColor = toViewBgColor;
+        //toViewController.collectionView.backgroundColor = collectionViewBgColor;
+        //toViewController.view.backgroundColor = toViewBgColor;
         
         // hide the from view
         fromViewController.view.hidden = YES;
         fromViewController.view.alpha = 0.0;
 
         // Declare that we've finished
-        [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
+        if ([transitionContext transitionWasCancelled]) {
+            [transitionContext completeTransition:NO];
+        } else {
+            [transitionContext completeTransition:YES];
+        }
     }];
 }
 
