@@ -24,5 +24,6 @@
 
 @property (nonatomic, readonly) CardingViewController *parentViewController;
 @property (nonatomic, assign, getter = isInteractive) BOOL interactive;
+@property (nonatomic, weak) id theFromViewController;
 
 @end

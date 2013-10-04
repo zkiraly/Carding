@@ -13,8 +13,10 @@
 #import "CardingCell.h"
 #import "CardingModel.h"
 #import "CardingTransitionToSingleController.h"
+#import "CardingTransitionToListController.h"
 
-@interface CardingViewController (){
+@interface CardingViewController () //<UIViewControllerTransitioningDelegate>
+{
     
 }
 @property (nonatomic, strong) CardingTransitionToSingleController *interactiveAnimatedPushTransition;
@@ -43,7 +45,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    // Set outself as the navigation controller's delegate so we're asked for a transitioning object
+    // Set ourself as the navigation controller's delegate so we're asked for a transitioning object
     self.navigationController.delegate = self;
     //NSLog(@"%@", [self.navigationController.view recursiveDescription]);
 }
@@ -63,6 +65,27 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - UIViewControllerTransitioningDelegate methods
+#if 1
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    NSLog(@"CardingViewController animationControllerForDismissedController:");
+    return [[CardingTransitionToListController alloc] init];
+}
+
+- (id <UIViewControllerAnimatedTransitioning>) animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+    NSLog(@"CardingViewController animationControllerForPresentedController:");
+    
+    return self.interactiveAnimatedPushTransition;
+    //return nil;
+}
+
+- (id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id<UIViewControllerAnimatedTransitioning>)animator {
+    NSLog(@"CardingViewController interactionControllerForPresentation:");
+    return self.interactiveAnimatedPushTransition;
+    //return nil;
+}
+#endif
 
 #pragma mark - UICollectionViewDataSource methods
 
@@ -119,6 +142,7 @@
     return cell;
 }
 
+#if 0
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSLog(@"CardingViewController prepareForSegue:sender:");
     
@@ -130,9 +154,11 @@
         if (_selectedIndexPath != nil) {
             CardingSingleViewController *secondViewController = (CardingSingleViewController *)segue.destinationViewController;
             secondViewController.item = [[[CardingModel sharedInstance] cards] objectAtIndex:_selectedIndexPath.item];
+            secondViewController.transitioningDelegate = self;
         }
     }
 }
+#endif
 
 
 
@@ -140,7 +166,23 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"CardingViewController collectionView:disSelectItemAtIndexPath");
-    [self performSegueWithIdentifier:@"CELL_TO_DETAIL_SEGUE" sender:self];
+    
+    UIStoryboard *storyboard = self.storyboard;
+    
+    CardingSingleViewController *svc = [storyboard instantiateViewControllerWithIdentifier:@"SINGLE_VIEW_CONTROLLER"];
+    
+    _selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
+    
+    svc.item = [[[CardingModel sharedInstance] cards] objectAtIndex:_selectedIndexPath.item];
+    
+    //self.interactiveAnimatedPushTransition.theFromViewController = self;
+    
+    //svc.transitioningDelegate = self;
+
+    [self.navigationController pushViewController:svc animated:YES];
+    
+    //[self performSegueWithIdentifier:@"CELL_TO_DETAIL_SEGUE" sender:self];
+    
 }
 
 #pragma mark - UINavigationControllerDelegate methods
@@ -152,7 +194,7 @@
     }
     
 }
-
+#if 1
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
                                                fromViewController:(UIViewController *)fromVC
@@ -174,11 +216,13 @@
     if ([animationController isKindOfClass:[CardingTransitionToSingleController class]] && [_interactiveAnimatedPushTransition isInteractive]) {
         NSLog(@"CardingViewController returning an interactionController");
         return self.interactiveAnimatedPushTransition;
+        //return nil;
     }
     else {
         return nil;
     }
 }
+#endif
 
 #if 0
 #pragma mark UIGestureRecognizer handlers

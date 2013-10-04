@@ -11,6 +11,7 @@
 #import "CardingViewController.h"
 #import "CardingSingleViewController.h"
 #import "CardingCell.h"
+#import "CardingModel.h"
 
 @interface CardingTransitionToSingleController() {
     
@@ -68,14 +69,26 @@
         // get the cell index path under that touch
         CGPoint collectionViewLocation = [_parentViewController.collectionView convertPoint:location fromView:_parentViewController.view];
         NSIndexPath *indexPath = [_parentViewController.collectionView indexPathForItemAtPoint:collectionViewLocation];
-        
-        offset = [recognizer locationInView:[_parentViewController.collectionView cellForItemAtIndexPath:indexPath]];
+        UICollectionViewCell *cell = [_parentViewController.collectionView cellForItemAtIndexPath:indexPath];
+        offset = [recognizer locationInView:cell];
         CGPoint startingFrameOriginInCollectionView = [_parentViewController.collectionView cellForItemAtIndexPath:indexPath].frame.origin;
         startingFrameOrigin = [_parentViewController.view convertPoint:startingFrameOriginInCollectionView fromView:_parentViewController.collectionView];
         NSLog(@"offset x: %f, y: %f", offset.x, offset.y);
         [_parentViewController.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        
+        
+
+
+        
         // now initiate the push
+        
         [_parentViewController collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+#if 0
+        CardingSingleViewController *nextVC = [[CardingSingleViewController alloc] init];
+        nextVC.item = [[[CardingModel sharedInstance] cards] objectAtIndex:indexPath.item];
+        _parentViewController.selectedIndexPath = indexPath;
+        [_parentViewController.navigationController pushViewController:nextVC animated:YES];
+#endif
 #endif
         
     }
@@ -95,9 +108,9 @@
         viewFrame.origin.y = touchInContainerView.y - offset.y;//+64.0;
         NSLog(@"Newframe location: %f", viewFrame.origin.y);
         // animate
-        [UIView animateWithDuration:0.02 animations:^{
+        //[UIView animateWithDuration:0.02 animations:^{
             dragingView.frame = viewFrame;
-        }];
+        //}];
 
         [self updateInteractiveTransition:progress];
         
@@ -120,7 +133,7 @@
             //viewFrame.origin.x = touch.x - offset.x;
             viewFrame.origin.y = 0.0+64.0;
             // animate
-            [UIView animateWithDuration:[self duration]*progress animations:^{
+            [UIView animateWithDuration:[self duration]*(1.0-progress) animations:^{
                 dragingView.frame = viewFrame;
             }];
         }
@@ -175,6 +188,9 @@
 #endif
     
     CardingViewController *fromViewController = (CardingViewController*)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    
+    // CardingViewController *fromViewController = (CardingViewController *)self.theFromViewController;
+    
     CardingSingleViewController *toViewController = (CardingSingleViewController*)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     UIView *containerView = [transitionContext containerView];
@@ -185,13 +201,22 @@
     
     // add the "to" view
     // get a snapshot using off-screen rendering
+    
+#if 0
+    UIGraphicsBeginImageContextWithOptions(toViewController.view.bounds.size, NULL, 0);
+    [toViewController.view drawViewHierarchyInRect:toViewController.view.bounds afterScreenUpdates:NO];
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+#else
     UIGraphicsBeginImageContext(toViewController.view.bounds.size);
     [toViewController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
+#endif
     UIImageView *toViewSnapshot = [[UIImageView alloc] initWithImage:viewImage];
     toViewSnapshot.tag = 101101;
-    
     
     toViewController.view.hidden = YES;
     [containerView addSubview:toViewController.view];
@@ -265,6 +290,10 @@
     // hide the collection view before the animation
     fromViewController.collectionView.hidden = YES;
     
+    if(self.interactive) {
+        
+    }
+    
     // perform the animation
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         // move all snapshots lower than the selected, to the bottom edge of the screen
@@ -314,6 +343,7 @@
             fromViewController.collectionView.alpha = 1.0;
             fromViewController.view.hidden = NO;
             fromViewController.view.alpha = 1.0;
+            //[fromViewController.view removeFromSuperview];
             [transitionContext completeTransition:YES];
         }
         
@@ -345,9 +375,24 @@
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     //[[transitionContext containerView] addSubview:toViewController.view];
+ #if 0
+    NSLog(@"raise the selected card a bit");
+
+    UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
+    CGRect tempFrame = dragingView.frame;
+    tempFrame.origin.y -= 32.0;
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        dragingView.frame = tempFrame;
+    }];
+#endif
+     
+     
+    
     
     
     CGRect endFrame = [[transitionContext containerView] bounds];
+    
     
     
 }

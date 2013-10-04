@@ -8,15 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
+@class CardingSingleViewController;
+
 @protocol CardingTransitionToListControllerDelegate <NSObject>
 -(void)interactionBeganAtPoint:(CGPoint)p;
 @end
 
-@interface CardingTransitionToListController : NSObject <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
+@interface CardingTransitionToListController : UIPercentDrivenInteractiveTransition <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
+
+- (id)initWithParentViewController:(CardingSingleViewController *)viewController;
+- (void)userDidSwipe:(UISwipeGestureRecognizer *)recognizer;
 
 @property (nonatomic) id <CardingTransitionToListControllerDelegate> delegate;
 @property (nonatomic) BOOL hasActiveInteraction;
 @property (nonatomic) UINavigationControllerOperation navigationOperation;
 @property (nonatomic) UICollectionView* collectionView;
+
+@property (nonatomic, readonly) CardingSingleViewController *parentViewController;
+@property (nonatomic, assign, getter = isInteractive) BOOL interactive;
 
 @end
