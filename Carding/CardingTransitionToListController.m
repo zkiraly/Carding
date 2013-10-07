@@ -42,9 +42,9 @@
 - (void)userDidPan:(UIPanGestureRecognizer*)recognizer {
     self.interactive = YES;
     static CGFloat startingDistanceToTop;
-    static UIView *cardToPan = nil;
+    //static UIView *cardToPan = nil;
     static CGPoint offset;
-    static CGPoint startingFrameOrigin;
+    //static CGPoint startingFrameOrigin;
     static CGPoint startingTouch;
     CGPoint touch = [recognizer locationInView:_parentViewController.view];
     CGFloat progress;
@@ -184,7 +184,7 @@
     
     
     // get the selected item's path
-    NSIndexPath *selectedIndexPath = toViewController.selectedIndexPath;
+    //NSIndexPath *selectedIndexPath = toViewController.selectedIndexPath;
     
     // get the visible cell index paths
     NSMutableArray *visibleCellIndexPaths = [[toViewController.collectionView indexPathsForVisibleItems] mutableCopy];
@@ -300,7 +300,7 @@
     
     CardingSingleViewController *fromViewController = (CardingSingleViewController*)[_transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    CardingViewController *toViewController = (CardingViewController*)[_transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    //CardingViewController *toViewController = (CardingViewController*)[_transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     UIView *containerView = [_transitionContext containerView];
     
@@ -325,8 +325,8 @@
     
     self.transitionContext = transitionContext;
     
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    //UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    //UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     //[[transitionContext containerView] addSubview:toViewController.view];
 #if 0
@@ -345,7 +345,7 @@
     
     
     
-    CGRect endFrame = [[transitionContext containerView] bounds];
+    //CGRect endFrame = [[transitionContext containerView] bounds];
     
     
     
@@ -362,8 +362,8 @@
     
     id<UIViewControllerContextTransitioning> transitionContext = self.transitionContext;
     
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    //UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    //UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     [transitionContext updateInteractiveTransition:percentComplete];
     
@@ -377,8 +377,8 @@
     NSLog(@"CardingTransitoinToSingleController finishInteractiveTransition");
     id<UIViewControllerContextTransitioning> transitionContext = self.transitionContext;
     
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    //UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    //UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     
     
@@ -397,8 +397,8 @@
     
     id<UIViewControllerContextTransitioning> transitionContext = self.transitionContext;
     
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    //UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    //UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 #if 0
     UIView *containerView = [transitionContext containerView];
     NSArray *subviews = [containerView subviews];

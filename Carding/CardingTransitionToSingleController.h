@@ -16,6 +16,7 @@
 @interface CardingTransitionToSingleController : UIPercentDrivenInteractiveTransition <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
 
 - (id)initWithParentViewController:(CardingViewController *)viewController;
+- (void)userDidPan:(UIPanGestureRecognizer*)recognizer;
 
 @property (nonatomic) id <CardingTransitionToSingleControllerDelegate> delegate;
 @property (nonatomic) BOOL hasActiveInteraction;

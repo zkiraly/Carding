@@ -32,7 +32,7 @@
     self.title = @"Cards";
     self.interactiveAnimatedPushTransition = [[CardingTransitionToSingleController alloc] initWithParentViewController:self];
 
-    UIPanGestureRecognizer *pushRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self.interactiveAnimatedPushTransition action:@selector(userDidPan:)];
+    UILongPressGestureRecognizer *pushRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self.interactiveAnimatedPushTransition action:@selector(userDidPan:)];
     [self.collectionView addGestureRecognizer:pushRecognizer];
 }
 
