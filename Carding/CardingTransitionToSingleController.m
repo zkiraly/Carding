@@ -108,7 +108,7 @@
         CGRect viewFrame = _detailViewSnapshot.frame;
         //viewFrame.origin.x = touch.x - offset.x;
         viewFrame.origin.y = touchInContainerView.y - offset.y;//+64.0;
-        NSLog(@"Newframe location: %f", viewFrame.origin.y);
+        NSLog(@"Progress: %f, newframe location: %f", progress, viewFrame.origin.y);
         // animate
         //[UIView animateWithDuration:0.02 animations:^{
         //dragingView.frame = viewFrame;
@@ -134,7 +134,7 @@
             UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
             CGRect viewFrame = dragingView.frame;
             //viewFrame.origin.x = touch.x - offset.x;
-            viewFrame.origin.y = 0.0+64.0;
+            viewFrame.origin.y = 0.0;//+64.0;
             // animate
             [UIView animateWithDuration:[self duration]*(1.0-progress) animations:^{
                 dragingView.frame = viewFrame;

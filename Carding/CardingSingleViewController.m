@@ -37,7 +37,7 @@
     
     self.cardNumber.text = self.item;
     
-    self.interactiveAnimatedPopTransition = [[CardingTransitionToListController alloc] initWithParentViewController:self];
+    //self.interactiveAnimatedPopTransition = [[CardingTransitionToListController alloc] initWithParentViewController:self];
     
     //UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
     //UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self.interactiveAnimatedPopTransition action:@selector(handlePopRecognizer:)];
