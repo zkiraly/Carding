@@ -131,13 +131,13 @@
         if (progress > 0.25) {
             [self finishInteractiveTransition];
             // get the UIView we need to drag
-            UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
-            CGRect viewFrame = dragingView.frame;
+            //UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
+            CGRect viewFrame = _detailViewSnapshot.frame;
             //viewFrame.origin.x = touch.x - offset.x;
             viewFrame.origin.y = 0.0;//+64.0;
             // animate
             [UIView animateWithDuration:[self duration]*(1.0-progress) animations:^{
-                dragingView.frame = viewFrame;
+                _detailViewSnapshot.frame = viewFrame;
             }];
         }
         else {
@@ -146,13 +146,13 @@
             
             
             // get the UIView we need to drag
-            UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
-            CGRect viewFrame = dragingView.frame;
+            //UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
+            CGRect viewFrame = _detailViewSnapshot.frame;
             //viewFrame.origin.x = touch.x - offset.x;
             viewFrame.origin.y = startingFrameOrigin.y;
             // animate
             [UIView animateWithDuration:[self duration]*progress animations:^{
-                dragingView.frame = viewFrame;
+                _detailViewSnapshot.frame = viewFrame;
             }];
             
             [self cancelInteractiveTransition];
@@ -425,10 +425,10 @@
     
     //UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     //UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    
+    self.interactive = NO;
     [transitionContext finishInteractiveTransition];
     //[transitionContext completeTransition:YES];
-    self.interactive = NO;
+    
     
 }
 

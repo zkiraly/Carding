@@ -129,7 +129,7 @@
             [self finishInteractiveTransition];
 #if 1
             // get the UIView we need to drag
-            UIView *draggingView = [_parentViewController.navigationController.view viewWithTag:101101];
+            UIView *draggingView = _detailViewSnapshot;//[_parentViewController.navigationController.view viewWithTag:101101];
             CGRect viewFrame = draggingView.frame;
             //viewFrame.origin.x = touch.x - offset.x;
             viewFrame.origin.y = _cellFrame.origin.y;
@@ -153,6 +153,8 @@
             viewFrame.origin.y = 0.0f;//startingFrameOrigin.y;
             // animate
             [UIView animateWithDuration:[self duration]*progress animations:^{
+                //    [UIView animateWithDuration:1.0f animations:^{
+                    
                 draggingView.frame = viewFrame;
             }];
 #endif
@@ -308,12 +310,14 @@
             
         }
         [fromSnapshot removeFromSuperview];
-        [fromViewController.view removeFromSuperview];
         
-
-        
-        // Declare that we've finished
-        [transitionContext completeTransition:YES];
+        if([transitionContext transitionWasCancelled]) {
+            [transitionContext completeTransition:NO];
+        } else {
+            [fromViewController.view removeFromSuperview];
+            // Declare that we've finished
+            [transitionContext completeTransition:YES];
+        }
     
     }];
     
@@ -425,7 +429,7 @@
     
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     //UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-#if 1
+#if 0
     UIView *containerView = [transitionContext containerView];
     NSArray *subviews = [containerView subviews];
     for (UIView *view in subviews) {
