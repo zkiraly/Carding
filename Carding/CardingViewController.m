@@ -15,11 +15,12 @@
 #import "CardingTransitionToSingleController.h"
 #import "CardingTransitionToListController.h"
 
-@interface CardingViewController () //<UIViewControllerTransitioningDelegate>
+@interface CardingViewController () <UIViewControllerTransitioningDelegate>
 {
     
 }
 @property (nonatomic, strong) CardingTransitionToSingleController *interactiveAnimatedPushTransition;
+@property (nonatomic, strong) CardingTransitionToListController *interactiveAnimatedPopTransition;
 
 @end
 
@@ -31,6 +32,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.title = @"Cards";
     self.interactiveAnimatedPushTransition = [[CardingTransitionToSingleController alloc] initWithParentViewController:self];
+    self.interactiveAnimatedPopTransition = [[CardingTransitionToListController alloc] initWithParentViewController:self];
 
     UILongPressGestureRecognizer *pushRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self.interactiveAnimatedPushTransition action:@selector(userDidPan:)];
     [self.collectionView addGestureRecognizer:pushRecognizer];
@@ -68,10 +70,7 @@
 
 #pragma mark - UIViewControllerTransitioningDelegate methods
 #if 1
-- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-    NSLog(@"CardingViewController animationControllerForDismissedController:");
-    return [[CardingTransitionToListController alloc] init];
-}
+
 
 - (id <UIViewControllerAnimatedTransitioning>) animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
     NSLog(@"CardingViewController animationControllerForPresentedController:");
@@ -82,8 +81,25 @@
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id<UIViewControllerAnimatedTransitioning>)animator {
     NSLog(@"CardingViewController interactionControllerForPresentation:");
-    return self.interactiveAnimatedPushTransition;
-    //return nil;
+    if ([animator isKindOfClass:[CardingTransitionToSingleController class]] && [_interactiveAnimatedPushTransition isInteractive]) {
+        return self.interactiveAnimatedPushTransition;
+    } else {
+        return nil;
+    }
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    NSLog(@"CardingViewController animationControllerForDismissedController:");
+    return self.interactiveAnimatedPopTransition;
+}
+
+- (id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator {
+    NSLog(@"CardingViewController interactionControllerForDismissal:");
+    if ([animator isKindOfClass:[CardingTransitionToListController class]] && [_interactiveAnimatedPopTransition isInteractive]) {
+        return self.interactiveAnimatedPopTransition;
+    } else {
+        return nil;
+    }
 }
 #endif
 
@@ -177,9 +193,11 @@
     
     //self.interactiveAnimatedPushTransition.theFromViewController = self;
     
-    //svc.transitioningDelegate = self;
+    svc.transitioningDelegate = self;
+    svc.interactiveAnimatedPopTransition = self.interactiveAnimatedPopTransition;
 
-    [self.navigationController pushViewController:svc animated:YES];
+    //[self.navigationController pushViewController:svc animated:YES];
+    [self presentViewController:svc animated:YES completion:nil];
     
     //[self performSegueWithIdentifier:@"CELL_TO_DETAIL_SEGUE" sender:self];
     
@@ -194,7 +212,7 @@
     }
     
 }
-#if 1
+#if 0
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
                                                fromViewController:(UIViewController *)fromVC

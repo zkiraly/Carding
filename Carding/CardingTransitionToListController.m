@@ -16,7 +16,7 @@
 }
 
 @property (nonatomic, strong) id<UIViewControllerContextTransitioning> transitionContext;
-
+@property (nonatomic, strong) UIView *detailViewSnapshot;
 
 @end
 
@@ -34,8 +34,13 @@
 
 - (void)userDidSwipe:(UISwipeGestureRecognizer *)recognizer {
     NSLog(@"CardingTransitionToListController userDidSwipe");
+    
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionDown) {
+        
+    }
+    
     self.interactive = NO;
-    [_parentViewController.navigationController popViewControllerAnimated:YES];
+    [_parentViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     
 }
 
@@ -76,7 +81,8 @@
         
         // now initiate the push
         
-        [_parentViewController.navigationController popViewControllerAnimated:YES];
+        //[_parentViewController.navigationController popViewControllerAnimated:YES];
+        [_parentViewController dismissViewControllerAnimated:YES completion:nil];
 
 #endif
         
@@ -91,14 +97,15 @@
         NSLog(@"touches x: %f y: %f progress: %f", touchInContainerView.x, touchInContainerView.y, progress);
         
         // get the UIView we need to drag
-        UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
-        CGRect viewFrame = dragingView.frame;
+        //UIView *draggingView = [_parentViewController.navigationController.view viewWithTag:101101];
+        UIView *draggingView = _detailViewSnapshot;
+        CGRect viewFrame = draggingView.frame;
         //viewFrame.origin.x = touch.x - offset.x;
         viewFrame.origin.y = touchInContainerView.y - offset.y;//+64.0;
         NSLog(@"Newframe location: %f", viewFrame.origin.y);
         // animate
         //[UIView animateWithDuration:0.02 animations:^{
-        dragingView.frame = viewFrame;
+        draggingView.frame = viewFrame;
         //}];
         
         [self updateInteractiveTransition:progress];
@@ -118,13 +125,13 @@
             [self finishInteractiveTransition];
 #if 0
             // get the UIView we need to drag
-            UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
-            CGRect viewFrame = dragingView.frame;
+            UIView *draggingView = [_parentViewController.navigationController.view viewWithTag:101101];
+            CGRect viewFrame = draggingView.frame;
             //viewFrame.origin.x = touch.x - offset.x;
             viewFrame.origin.y = 0.0+64.0;
             // animate
             [UIView animateWithDuration:[self duration]*(1.0-progress) animations:^{
-                dragingView.frame = viewFrame;
+                draggingView.frame = viewFrame;
             }];
 #endif
         }
@@ -135,13 +142,13 @@
             
             
             // get the UIView we need to drag
-            UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
-            CGRect viewFrame = dragingView.frame;
+            UIView *draggingView = [_parentViewController.navigationController.view viewWithTag:101101];
+            CGRect viewFrame = draggingView.frame;
             //viewFrame.origin.x = touch.x - offset.x;
             viewFrame.origin.y = startingFrameOrigin.y;
             // animate
             [UIView animateWithDuration:[self duration]*progress animations:^{
-                dragingView.frame = viewFrame;
+                draggingView.frame = viewFrame;
             }];
 #endif
             
@@ -168,15 +175,18 @@
     
     CardingSingleViewController *fromViewController = (CardingSingleViewController*)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    CardingViewController *toViewController = (CardingViewController*)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UINavigationController *navController = (UINavigationController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+        
+    CardingViewController *toViewController = (CardingViewController *)[navController.viewControllers objectAtIndex:0];
     
     UIView *containerView = [transitionContext containerView];
     
-    [containerView addSubview:toViewController.view];
-    toViewController.view.hidden = YES;
+    [containerView addSubview:navController.view];
+    navController.view.hidden = YES;
     
     // take snapshot of fromView
     UIView *fromSnapshot = [fromViewController.view snapshotViewAfterScreenUpdates:NO];
+    _detailViewSnapshot = fromSnapshot;
     fromSnapshot.frame = [containerView convertRect:fromViewController.view.frame fromView:fromViewController.view.superview];
     // switch the fromView with the snapshot
     fromViewController.view.hidden = YES;
@@ -284,8 +294,8 @@
         [fromViewController.view removeFromSuperview];
         
         // make the toView visible
-        toViewController.view.hidden = NO;
-        toViewController.view.alpha = 1.0;
+        navController.view.hidden = NO;
+        navController.view.alpha = 1.0;
         
         // Declare that we've finished
         [transitionContext completeTransition:YES];
@@ -332,12 +342,12 @@
 #if 0
     NSLog(@"raise the selected card a bit");
     
-    UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
-    CGRect tempFrame = dragingView.frame;
+    UIView *draggingView = [_parentViewController.navigationController.view viewWithTag:101101];
+    CGRect tempFrame = draggingView.frame;
     tempFrame.origin.y -= 32.0;
     
     [UIView animateWithDuration:0.2 animations:^{
-        dragingView.frame = tempFrame;
+        draggingView.frame = tempFrame;
     }];
 #endif
     

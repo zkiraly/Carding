@@ -14,7 +14,6 @@
 {
     
 }
-@property (nonatomic, strong) CardingTransitionToListController *interactiveAnimatedPopTransition;
 
 //@property (nonatomic, strong) UIPercentDrivenInteractiveTransition *interactivePopTransition;
 
@@ -40,11 +39,16 @@
     
     self.interactiveAnimatedPopTransition = [[CardingTransitionToListController alloc] initWithParentViewController:self];
     
-    UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
-    popRecognizer.edges = UIRectEdgeLeft;
-    [self.view addGestureRecognizer:popRecognizer];
+    //UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
+    //UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self.interactiveAnimatedPopTransition action:@selector(handlePopRecognizer:)];
+    UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.interactiveAnimatedPopTransition action:@selector(userDidPan:)];
     
-    UIPanGestureRecognizer *swipeToPopRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.interactiveAnimatedPopTransition action:@selector(userDidSwipe:)];
+    
+    //popRecognizer.edges = UIRectEdgeLeft;
+    //[self.view addGestureRecognizer:popRecognizer];
+    [self.view addGestureRecognizer:panRecognizer];
+    
+    UISwipeGestureRecognizer *swipeToPopRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self.interactiveAnimatedPopTransition action:@selector(userDidSwipe:)];
     [self.view addGestureRecognizer:swipeToPopRecognizer];
 }
 

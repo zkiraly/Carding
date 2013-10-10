@@ -20,6 +20,7 @@
 
 //@property (nonatomic, assign, getter = isPresenting) BOOL presenting;
 @property (nonatomic, strong) id<UIViewControllerContextTransitioning> transitionContext;
+@property (nonatomic, strong) UIView *detailViewSnapshot;
 
 @end
 
@@ -102,14 +103,16 @@
         NSLog(@"touches x: %f y: %f progress: %f", touchInContainerView.x, touchInContainerView.y, progress);
         
         // get the UIView we need to drag
-        UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
-        CGRect viewFrame = dragingView.frame;
+        //UIView *dragingView = [_parentViewController.navigationController.view viewWithTag:101101];
+        //CGRect viewFrame = dragingView.frame; // _detailViewSnapshot
+        CGRect viewFrame = _detailViewSnapshot.frame;
         //viewFrame.origin.x = touch.x - offset.x;
         viewFrame.origin.y = touchInContainerView.y - offset.y;//+64.0;
         NSLog(@"Newframe location: %f", viewFrame.origin.y);
         // animate
         //[UIView animateWithDuration:0.02 animations:^{
-            dragingView.frame = viewFrame;
+        //dragingView.frame = viewFrame;
+        _detailViewSnapshot.frame = viewFrame;
         //}];
 
         [self updateInteractiveTransition:progress];
@@ -155,6 +158,7 @@
             [self cancelInteractiveTransition];
             
         }
+        _interactive = NO;
 
         //[self cancelInteractiveTransition];
     }
@@ -187,7 +191,9 @@
     NSLog(@"It is a NON-interactive transition");
 #endif
     
-    CardingViewController *fromViewController = (CardingViewController*)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UINavigationController *navController = (UINavigationController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    //CardingViewController *fromViewController = (CardingViewController*)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    CardingViewController *fromViewController = (CardingViewController *)[navController.viewControllers objectAtIndex:0];
     
     // CardingViewController *fromViewController = (CardingViewController *)self.theFromViewController;
     
@@ -217,6 +223,7 @@
 #endif
     UIImageView *toViewSnapshot = [[UIImageView alloc] initWithImage:viewImage];
     toViewSnapshot.tag = 101101;
+    _detailViewSnapshot = toViewSnapshot;
     
     toViewController.view.hidden = YES;
     [containerView addSubview:toViewController.view];

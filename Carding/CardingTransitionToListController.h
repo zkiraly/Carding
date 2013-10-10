@@ -18,6 +18,7 @@
 
 - (id)initWithParentViewController:(CardingSingleViewController *)viewController;
 - (void)userDidSwipe:(UISwipeGestureRecognizer *)recognizer;
+- (void)userdidPan:(UIPanGestureRecognizer *)recognizer;
 
 @property (nonatomic) id <CardingTransitionToListControllerDelegate> delegate;
 @property (nonatomic) BOOL hasActiveInteraction;
