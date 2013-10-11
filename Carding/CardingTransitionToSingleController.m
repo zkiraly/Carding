@@ -21,6 +21,7 @@
 //@property (nonatomic, assign, getter = isPresenting) BOOL presenting;
 @property (nonatomic, strong) id<UIViewControllerContextTransitioning> transitionContext;
 @property (nonatomic, strong) UIView *detailViewSnapshot;
+@property (nonatomic, assign) CGRect finalFrame;
 
 @end
 
@@ -108,6 +109,7 @@
         CGRect viewFrame = _detailViewSnapshot.frame;
         //viewFrame.origin.x = touch.x - offset.x;
         viewFrame.origin.y = touchInContainerView.y - offset.y;//+64.0;
+        viewFrame.origin.y = MAX(64.0f, viewFrame.origin.y);
         NSLog(@"Progress: %f, newframe location: %f", progress, viewFrame.origin.y);
         // animate
         //[UIView animateWithDuration:0.02 animations:^{
@@ -137,7 +139,7 @@
             viewFrame.origin.y = 0.0;//+64.0;
             // animate
             [UIView animateWithDuration:[self duration]*(1.0-progress) animations:^{
-                _detailViewSnapshot.frame = viewFrame;
+                _detailViewSnapshot.frame = _finalFrame; //viewFrame;
             }];
         }
         else {
@@ -174,7 +176,11 @@
 }
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
-    return 0.8;
+    if(self.interactive) {
+        return 0.3f;
+    } else {
+        return 0.5f;
+    }
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
@@ -191,10 +197,13 @@
     NSLog(@"It is a NON-interactive transition");
 #endif
     
+#if 1
+    CardingViewController *fromViewController = (CardingViewController*)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+#else
     UINavigationController *navController = (UINavigationController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    //CardingViewController *fromViewController = (CardingViewController*)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    CardingViewController *fromViewController = (CardingViewController *)[navController.viewControllers objectAtIndex:0];
     
+    CardingViewController *fromViewController = (CardingViewController *)[navController.viewControllers objectAtIndex:0];
+#endif
     // CardingViewController *fromViewController = (CardingViewController *)self.theFromViewController;
     
     CardingSingleViewController *toViewController = (CardingSingleViewController*)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
@@ -204,6 +213,7 @@
     // Setup the final view states
     CGRect newVCFrame = [transitionContext finalFrameForViewController:toViewController];
     newVCFrame.origin.y = 64.0;
+    _finalFrame = newVCFrame;
     
     // add the "to" view
     // get a snapshot using off-screen rendering
@@ -301,8 +311,12 @@
         
     }
     
+    long animationOptions = UIViewAnimationOptionCurveEaseInOut;
     // perform the animation
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+    if (self.interactive) {
+        animationOptions = UIViewAnimationOptionCurveEaseOut;
+    }
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0.0f options:animationOptions animations:^{
         // move all snapshots lower than the selected, to the bottom edge of the screen
         for (UIView *snapshot in snapshots)
         {

@@ -32,9 +32,10 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.title = @"Cards";
     self.interactiveAnimatedPushTransition = [[CardingTransitionToSingleController alloc] initWithParentViewController:self];
-    self.interactiveAnimatedPopTransition = [[CardingTransitionToListController alloc] initWithParentViewController:self];
+    //self.interactiveAnimatedPopTransition = [[CardingTransitionToListController alloc] initWithParentViewController:self];
 
     UILongPressGestureRecognizer *pushRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self.interactiveAnimatedPushTransition action:@selector(userDidPan:)];
+    pushRecognizer.minimumPressDuration = 0.2;
     [self.collectionView addGestureRecognizer:pushRecognizer];
 }
 
@@ -196,8 +197,8 @@
     svc.transitioningDelegate = self;
     svc.interactiveAnimatedPopTransition = self.interactiveAnimatedPopTransition;
 
-    //[self.navigationController pushViewController:svc animated:YES];
-    [self presentViewController:svc animated:YES completion:nil];
+    [self.navigationController pushViewController:svc animated:YES];
+    //[self presentViewController:svc animated:YES completion:nil];
     
     //[self performSegueWithIdentifier:@"CELL_TO_DETAIL_SEGUE" sender:self];
     
@@ -212,11 +213,12 @@
     }
     
 }
-#if 0
+#if 1
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
                                                fromViewController:(UIViewController *)fromVC
                                                  toViewController:(UIViewController *)toVC {
+    NSLog(@"UINavigationControllerDelegate animationControllerForOperation: ");
     // Check if we're transitioning from this view controller to a DSLSecondViewController
     if (fromVC == self && [toVC isKindOfClass:[CardingSingleViewController class]]) {
         NSLog(@"CardingViewController returning an animationController");
@@ -229,6 +231,7 @@
 
 - (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
                          interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController {
+    NSLog(@"UINavigationControllerDelegate interactionControllerForAnimationController: ");
     
     // Check if this is for our custom transition
     if ([animationController isKindOfClass:[CardingTransitionToSingleController class]] && [_interactiveAnimatedPushTransition isInteractive]) {
